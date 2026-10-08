@@ -16,12 +16,12 @@
 <meta name="apple-mobile-web-app-title" content="マーログ">
 <!-- サーバーにホストした場合はインストール可能なPWAとしても動作する(file://直接実行時は無効) -->
 <link rel="manifest" id="pwaManifest">
-<!-- ホーム画面アイコン(384×384・白地に黒ロゴ)。外部依存を作らないため data URL で埋め込む。
+<!-- ホーム画面アイコン(256×256・白地にマークのみ)。⚠️「マーログ」の文字は入れないこと(小さく潰れます)。外部依存を作らないため data URL で埋め込む。
      ⚠️ この base64 はファイル内で**ここ1箇所だけ**。manifest の icons は
         setupPWA() がこの link の href を読んで使い回す。2箇所に増やさないこと(§6-32)。
      ⚠️ iOS の「ホーム画面に追加」はこの apple-touch-icon だけを見る(manifest は見ない)。
         消すとアイコンが画面のスクリーンショットになります。 -->
-<link rel="apple-touch-icon" id="pwaIcon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAAGABAMAAABW6aiMAAAAGFBMVEX////+/v78/Pzc3NxNTU0EBAQBAQEAAADJ2FUVAAAK4ElEQVR42u3az28bxxUH8O9bOaicxrszK6VOk2h3ScptjCaSRbHOoUAQ2yp6LJA2l97yJwT9P/qftM21iC3bQQ9xYNKSWrRwYJJLqnDqRNyZXdWR7Ig7PVCkSPGnxTiQgfe52FpR3Hk782beDAkwxhhjjDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYO8XkCx9B8GI3X1wicRrbZU38yjPLyWkMYGbSFz75+g+PZ2Ox/8IGQPZLr31unpy6CCYOAGfPrjz+sVc7bRFMlANSSimpRNfC+eX4BewB1+j9/f29zNOzB0+z3wr9wgWw913+F1n5038tkvn87dmN09UDZyZYARZlHkBZRksLlcr7jVC/WDlAFqIbJVRzeWFtZ+5ZuR82Cyg79RDae/jVw9rsRfX1RaSZh08vPp59zl1AXTOd3FOj572JkvhH+6b2sns+nj1bf+l/JD5/3k/9aca0Gu2e/29u9d/T5oCMZgoCBBKAt3DbMzJ9vl0ws1ABORrkRKqQ9XdGJt34ACxVkPnOD1pQ6IXPt2ycD3KqpAGjC688zoRubaohRM7buYsVZZ7MAgB+9DrF2EPvsJSzx4dp/5Who7zd7M6V2Td+9Tq9bu/vz6zm3vrkrdfO3zLT9ICzmwvU0UxAWgR281inKjq+21E08k1N3Lc9UkehyIqVxd9AuJZqrw7jK33yACj5tVexum4ngMTqnUmtIFJ9w1iPGrjZiuq/1LkjWUFkNh2zsCGEpwLlmCkCcBbfKelF3bOXMVJ11xNE+b4bUFoaNcrd/sndhOnh/+JlAqUZuIiW9dx/bJX968mHEO3K9VLB9O7FRONab/Ny/X/YLI2qmWi179LBzc4vAcSPKgBqK479SS3zYJppdOW7UiF3bDcsHHOz50LU3wO0PLJmqvRdaT9/+OdjAbGzCgAxzDIVG87Jh5AxtwrXTG9XZ4gir2eIS7e/PQu3R3VB5niS651O5eJoAVFoX08fFKdZyKhRuBb1NI8yWhh3bE1the/fO1kdUf+d1enUrLLjqptOsZA52+9GVm+XbKyAlJhgVzDiFcoMnWbtCwQAbuupiRTZSJ+8B4jWvGP1qo42A0EjZ30JILW/HBOjqR4VW0eTBEk3Ft2TiL+hpxhCYm45FsfWhXPl5b5qb8CfppvpSepk2v59z+mNnftsmg2Nkwszxy4FB/8ETO8ydSzN5oRAUrbHdIBZ7/x/XnTmOe/VWLYnKSsA4nFDdWQAtP1h34bHLMaA0z1mTPN671t+bMFE425szFHYvznK/e13CUBX6dKwpxhCzgXrKNtMazCRWgWSngh6z32dVwkw/p/TcUmeaad51yC1Fz0LRlUBQFlXaMo9seWWq4tCAIDR8vA+spqBKdzOhKanECPRqlhIurUA8QNHgQI96ICsXYx3xqFzdMPduXoA47S69LKWMNMMIYrfuf6Pxdbc48goMZnDJwepr6wHvbsCP6SueZwi0zPPdC/bI+7ozS9ZQLLjGoCEjGVqTxOAmL+3lfUJAJz4gYqzojNW7Hxi9wQgt9d2dAjA+0kikJ7bNMDMJfQVnRLpvRE59/N6AJOW7RCw4oIAUE9PHoDjNLxcLACkm94NFKQ6PGFX0tLXmrfSnm3b6t2tVhYCSHaEAtHVsD8A6417I0rfJQuAs5UCMJZvIdmZJgeS3E263Jox6EHXvjKV2rFLfk/fn8lV8g0dwr7gE0xaNgBQHzDVp+Xhm+8klwig9shRAMQiASoat38dFYBu+DO+BcAgOqijCEgriGLhlFaIhOjp+zWfwtxfYO1mYwHTeobwVH8P0LhlP134wgCA48YC8stpciDd9N16a4mJms27VkbOBanrRvX0nutkop75dikWPi3H5lXPAurf+NXWjCSfoUIyumFpgfpOaABY25cB0xxbco08mXM6c2c5jLNpKJsbSaPk+jIJpHa6qmwyBJBaq21n60C60LfFnEhaLDlIvYbf2vb5AkbUp1qJY6s9TqzUVCRF35w/d1OrXE6XRPaLrm2GLs0JAaHfe+xZQLKzlZ4kADjrrtCHf+yfTwRqB46aJgDqLJI2NBQi68O7RYB8oSo91ZBxih9pQVTYTgRMWj7MPEXPFoAOKu+fu++F7REEeX+6AEB2TQAgI3RrsY1qGS1KmbmgulHp3qjF2BICDvkExOmmGV6lYtTEWN/OftPqAHvet2DsWjjNNApnFxkAoBmhAQi4WiilHU1alXvKfSNufKwFpYmASYt+OGznOy4LgvLd1rOycomAbtamq4VMYJVWCIAWQgMKqvZOXcQWNTP3M711Qiy2AsASQBwdZoAxAwMYdcyGWki6dfCyZAHx4Ww2xYamWVnRAtBWDFgrEkbbidAHodk0x5tVXDpMhzvttadZfOY0NtJoAKQv1zIw9n01XQ+Aqq22OK/cAoEwF6SisZXeKJT7Tjq03BIBgPhoCrKCAbWkTMNOrTsgR1ot9s8sWYCxJ5jNRgegzonDvbWvtLmL1ShfKGvUDzb7BoJJyx+0/uks/umgIaQGnA1dOL5F3V6LJVB/NH4EjZlGwzdjI1p7a2hkTdHCpZxaN1sDjpri3RoCGGfLnuz4BKtDF9fol0utmmKC9XDMQtZOuXTuM6Er5Kbrlp1v6EEnt2ahcgWg5L3JPgQkWhv2G+9Mth4AyU5opgwABiAtAEixtAGYCEH5g/jan8zgSTwjBTmrtyfM12rX8XZ3+53tNZ8AY9/xwykDSGc0aq2dcLyGUAOoi00nXdbhwEm8BgEkyxN2weCPHy179+pyLHpmgxMXc2jG7Xnbqc1ZAkBqQybu4E9ak6IPkOUSTo683av5WACpXfYwdQBUXVCtlUUbFcUSAGnhrQwOQNlbIWDnx6eeGD6wtq/mqwJAvbIVThLAuBzQcSMLAELqfEkRZPVnoRcPTi5jRz5AtXwUjs3gIUeLYj6TVxkA0cJ173sIAEDjzZACgMxq6iIqRYVLmoQZVotdAYjEvRPnAMmVagZA6t6dsCQfF0C8+9u/+60DLbnaXM+6OS3M8FpsUwTRwn1ngiw25ijMmUA4B4cbCzcAYOrNsq2/lwBwbrP4XqsGMFXkYHnWiG1hUv7AWKVNMzYFFBlzt/024rIypr2YRMuAqS1cjydr/9gADGmvVeS0+tzEAkbQkCbquGo1jx95DTzyA5qi/SAkZYBmexQGrqh5xQnX8wl6QJW84kftTykVpADixrAA0iBZ+jQzvoBJK91lten6MQ0SV3ml9Ym/VjX+yx7Oo9kz3uHUfvYsADzaUcM+h6cn396ZoICRSin9VbuNmvaUUg/be7vALd6Qk7Yf4xcdMnJutftru8Z8OnStJWv0J9wTLEz0x2JRVid+/fgvexhoJa9WOx90mNrB8Cw152oTFGBwRc86ILvqbGMXb1jP8AwmWvZlcjXfiUA5n44odsiZrgMAOtyVfW85AGDf33z5oglpFmrviSze2Rv1Wkwr+9WzvMdkhRc5u1fzSEO4whRvnKovXk5YOZKT5KUbIK2qcqzw4gUAN9UzlyRUc8OyT1MHPEOkrSMEyohT1q7JX+oKDPpiCmOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxxhhjjDHGfmj/ByhZYHqwpoPbAAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" id="pwaIcon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEABAMAAACuXLVVAAAAGFBMVEX////+/v78+/vUy8uNTEw1Dw8BAQEAAAAJ/ttRAAAVNElEQVR42u1cXW/jWHI9RTew7QBrVl0HyM4+tEVqEwTJS9uePxAgfztAfsC2uwd5SBCMSLaBzcwu1reKHmRbA2yz8nApiaQkW3Lv9ktUwEzPNCSyeG59nioKOMlJTnKSk5zkJCc5yUlOcpKTnOQkJznJSU7y/13omA8HRjX6cskPBvsiBV4d8+EYx7qXzF3DX4ZAdiRa/e2IARYOQQj81RTw+e2NCQBIbgBFKkua2ddCgJikFAgAUJAeB84JX80GMirzwnpjYEIp3pqxfy0EwAKICyDISggIYFBuX0MBKQuIsQIKQOfXbIjCpp8bfBUbIBCDBHAGIZNSgIwEnX1pIHp1cATILmY5PSgBKKT0m6qQnBbEX80L3JgAiBJR8kUBVP3rIDBnPDzCcm1KwJkV+Elm6t7Mmr8+AsQk84JIAEvBkBg+I0D1i5PRQUfAhGKWG1zBADLKCa0UKqpfGggPtAESo2wm7GZKyiA4CaPzL82Fh0dCN8mE2AXUCZubBJVFbBkkDADq9tf0AiUGA6akIBA7CQNqucHdANe/LgIOGIm71gHcCRsky9sHvX/TCNeIAJCVL0Lh4GTEJOwGJxUSkIjKb2M3sIFc8RKDOEwBAsBiv1SBdK2wgVwetJk1odM5C9z8LtVsx6JwIAICEkcTSan7tjAIVOoIQ2dzKQRe+01lUD/6EA5SgBgg0fz7Jkj3k7Cxkiy0KWrRM5HAgDmJ+Z0ejcKrw3yQcge5wtvu22AAI+rdrAbwdn7VAiit1FpvavNx5fqXOwIYVxpYz2SmUOnqBxDE54GJAYAhxiZH28IhCuSYASDXOlO6Dgpxr+N3sxpc/ybk5r2VlPCa9MasOwKFV4fE4bZkI/6s2ayay0xhvNBIBLZM2KRSQIgBUIE1CuVh0fEQBLwVMOnDXVYFEYV41EXDNZPOs7yNKSf6CAXE6i+GAIPFyWOFjkopFPBaG1gmBmGT35qCoDJGge8AKp7P2Aco4Pc3xOraliZSqrjGeFcQ4CDKKT58YEs1y0tQeF6BcPEoDFUq3URYjbv6Dh+vxSsTYVr0EXgxhwr6jiWhkL8HqICrfYkCXTMPORxU/vLf56zisdaSmC7/XEPQ5vpYKkDsC2DOSH3D4Sg8pwAV3aMwIETcFQzAKxMBZPZbsIirNlcpYwOoSqiQDFHoDCijvViBvApFyE1CgKJUsHaGIAUQHQaXRZe7AogkAl8Ac/EhCgjm1csRCGztbZE60kRmeCMkRYrPRGy6ycjGCqCGb1AQsInW2ZvmhQrEWIaQtwwFxJVycoQi9WfKmYj7x7x3FkWUwOh6FIghEIFXuInNy0oyKgGRPtQDBAaIJPWk2giTaxz2RubmBqBWrWKd/p5CEM5mL0Igr0oKpbfsqRnqyQkFxCu7qr7NW6d8GDK2UCAGlaxv7EUIMKQQZrjppkkV6jN0ADFsK9ybqzdrFBRgiPQp81gE2jnNWSlPvWCfmF0F0AjxWxF83067U1eoCBBXKIhToXZlxytA7bxkgHWkPhGcopE4weGW7zAw6/+p4RqE2yAz7Gmjn1CArQyFQkw8trLigtwE0BRizTxavit9aGqe4wL4tiq9lfy7HMcrIAXY4PB6cwgkcHKSAFAKf8PScWARKxQUypCMXmADWciVxESjBp9GaFcA8jB0Qtch8eoKEgEWcytU5E27+wyypwDoLxdrk22+JhWKNuCoBFTwuJhVVdQAaK8fvHqqGHcjNo/67jcypgMFCoFCvd5EGNbQVbRlC2VUIxWyiyPjgLE7uwH6sION5RQN4hCXTMLOCwEgEbR8lAIiXlnLAOvZrfjUyokBiGbDixYsNztsPTjYjd4c54ZE3MEtByBEMqH1e6cwHST63C4FzrsbVELxcH+oAsSUm8eY3fZZWMKQjjUeNAzNwLQzBig0NOXN4hwGD2Gmu/xg1xEIkwhAQZiYIcIDAHx9fWX1jXVQqhdkRjtMAEz7RiPbCFBe9cRcmPVwK2SKPgCQG28f3Rb4c2EDTB6aiyOMMBPZWJ7Ibt7GdnQ+4mMV2LnnN+gwBMgf5wxAGFBZVZsbCAZoyMIGp8r9s+TtWKEqBUsP4c39DiPYoUAhBRQi3h+bDCK+k5skvRzuys0uMgU7XIYg/NgdYgOZSIloxIAqZPTMwCbdGNSNg6//ZnegsZLZGIAW1a5guGUDXkhhqRL0lQ3biC/bhN62P6rkkjz9AHpuuw+dJFc78sEWAi5BVEVc03xAIfAKoU8GtDkPcrBZBAncgMcep3ZyotIfvJvkHy8O8QI2kRS908Mbqk1zN3xAi+uCGYSUMV23AlGPERHvspAtBDLKDW4gRl6BCiC+87Z3SUdrq8oIEU1ht/DKQAF5ehSraWySGfUnyCZhps8jQCCARNigqmpwjQ3WyWAd+4xdgYxEBGB3pPPtJlEgFsLraSd17SG5YKWl11BZAB7PRFKWM7qoVkGVDIwZQEGsAvQsnYDEvU55WEXkG6dzE1dVvS+LdT1iVqyu49FqYkBESgCznXch2Rg+Cx8QB7rNJYhFRXF3FkRTNJLuDn0cghv6cQ0xblf6NVkJHdSm/txUa8cRsPZBvAQEXr39CU6AKAC1vuhxdm8KaopVrEspwOE6CFZkGYvxUQoQPNX9vKo6cBZnuUIEWCiJrlMRwO366v0ZlVHRK5uqJBozvgcEor7eBQBV41Bypc2VAE6dWijSCZjsrnyE7wZ2LHF47DtZw1c7iGE2BlS8MkXUyyvBAjN4rdAPt+uM6DYz5y1K128Bv9tAwPa0F2wr0BN7BNVFw3ZLXFamOaJpbNxrUREAbtUMNmesjn+Q+7yoV/elgQnw4pCSLENlHmt1VW1g+ACQcKyrWh9qZ1WGAorByNRUx0QcrdYMUPLxPOFiHmeVOhWLGHLjR8o1K95rdwcStEYlsRtk8DSfP6AcG5ikYCFxVAa5fzwoENVqrpWBwSQ0k9Qk3AEQZtTKUE2msvlW1UznjNInIttYgNkOP9hWIFy44vOdKklVdQ0BlD/ecFnCq9pkphrVxFHxOhOGIvWEviaG+1aOqBjGlw5+UCCyiuFdlXKj5AYoCxborxaVAswAE6KUoftVGjVZkRlB2QgCbAp3PdAGIuIcWfnuFph7NQ9spBHzxWXmFYBLN6M53HldHahe3N8AQFdXOPuXFHMqAeJ8GC140R5WljsWDuA9WikgDLiroigK6YOTCKvaoCXqTc3N19GGUoPD44Yyt4PSsfA7oOzeZfP89jIH5e8eqArzBW4MIPCcVR6UrY+/WuFiZQzsj2uCTWG/4UEUsm5XZ7KrOTUHIN7AZsZo4dacob0uKwpOqxJLpe6rlA6wYlW+XTCvgbSMyGXIFRzYHXsb8hpy88Efb8zI9XN4aK4rmSMaFYCC1TakSVZ6fZmOwPJkDOt6lHVoAn5we+4AkcwAYgNqg0FhxCH04b1TOJBys5D3Zy3SPQ4rchm1pE6sByrgCuDyz8KuxG1umYd8cXZdcT9EBRnYAGcGQKJCADx+dFrFXoNtKvJkWnFnc/oERxSyda/h1uGzeqS8vQHY4aNevz+NZtM7qzMMxOs8Zfs2DPYr4AlvB7qmQ1v6Aij/+LfkArjVO+jvG1vVHP4ObBQgukmFDxl3L5wbZh15yn7V2d8DcChAWy5NgQZHaJnLiNkx0/woBUjTiXsrN1a5Ugk012Wyb+UtviY1gukA7krVST2q3uysSLJ9RP3gj5BSi1pHwi4wmEEBFZ24t/CKLwcA5mFoiciPoekYLiA1kEgpToCb3xdlmtJ6lR7O3M22ZqNal5q6pk0mEj2OKVVRZXgiBLtU71D+WLBTouJoNZswc4wIBLhBAfKSB9lXVXeawD4FTBYSZgC8jlCDA3RxfyMKASii6P2zAhD7DLi+V1VWAHWjKpTR5kdRtQZVKGBeVapNog9FmAG4az368NtVn5A6NlIAjCG96a7toVVx/xjlQuoitkXs3qdu4eL+RnKT1Jau8nxgpbyl1Jb2LtGUqZbhYu0jJg8dXxxH1yu0qmpFmdjCBAAJ4IDrKqq7euyfrFvXxgaAdEZDE9i7dHa2T4FlWX0DXdryE52zga7ub/45t3MAsB/uVggsl0vg198A0GWtv//Vz68BLJdA5uGb1zhfXYyrH7FcHheKI2ooeXQ1T/M67pO77yDugQYpR3qqlYhENoSae5s3R+YCK6sN10Bv7m+CpxqAXIuhfX8sAaATcKyQvb1LJJHzKi4mOmnPvOKpwWU1Jm5ktulZRxVuysVmnRrglgByok1B7K7w44dWK3Ij2hAAh6IuhkilGiRzqBDHKkQAhMDDadIi4+MHlx5diaE9ALwCYNxlc0rBqrBEjcR0TDzkzd11jwk8PTvWvtehN/fXYfVA5FqM5rszAOhSwaf9sB1OPDAB3T+/P3CVawjApL5dcfkJ41VvD5Y1eaD8xGLVQWu9VwMAQKqjfsdSIc2TcmqY/EhR7BufH7RTShsAHI5mm/yblHyEMSNnH/EFR0BX9bchX/cBajSywbRa045fM3AaRgGFVKBjR7cDDbKNBQA+Xidv+15mwkDxmqCFiZPM9r2K8jwCxChoAwABhW5Vbz6h+sKAqQMg4Mt3L7YBbqUY1DxajQriRBHYdEggQw1FypKvX6yAt7J2AUc0265ebdJ4p6ps4MQSbi5vdg7Qn1cgb4tBaUPToUWqBZrppKaYDhCzgl5oA3w/l4Hhuw6nDskJfJppAq8o7TUgCuf2hW4Y8mGHM45qdpmOYPSFbjrrpjyq7l46fvYIOLuW9SDKoWo0KnYZgGb52C63GnET7vRx9hIj5GboweRjG2xBO0zAZTLsZRKZF24v8gKS4Rd3ddm7Jsg6GTdTKeVV+wIvYHCYuI9NvVA/jlSgLmPeukw7L0LevkCBrBgfZiymGHg3WmgD0Y5puwIhzA6haqfSSD6gjtybLXe2adPlvE0eSK7t9eVFe7wCRAMSgCYOl+639dLlgJoZ3UuYXuAFk2/5dunIo2kBOXGxnftIXItw9BHw2Hcdk2dQuDZTvPfsSkAzOV4BG86iCYSrSRP97k7Gbki7+UAg10oujj+Czeg3/W9onh3DsEB2NfxevSQUjz3HSS7Glwmi2xXk7ivh3Y4d7+cUoMlGAskMWVnsN0pyGYahwS1N3toB+wNbGgy/RC4XddlV4wgz/vxFO8REBuZUavN4JAJss2lUzYqCxxhsm81QPx2jd+wRTKptkLelnJVvqnr/68bFgJ0b7UBpkfGRR8CPW6tZIAFrgwI7V+YpJx50hYpNl85GovGFveHgBhpCrG7ink6D/JEGe0+yyDZkxoo7OL41m+Z+CSEAuwIrQMwjG6iH4+sdafJoBAQKKqPfagUS3aHhpilz6GdtZhvjvPj+ixHo60AJIoxi64koH9qgwa1eRwK3XTuFr44KhImhFwXK7v3c73ZgkA2pGdIs9/4ILI96lb2gJJtkNHUHQ0BFITOIFBN9RYY6u6mtizjf5TfH2YCTNzcqJAoEqS5DrDBOht7MN2MaqFXDMbuCvtwLtLcnAkkpjGxiBzRblwzK7oNgnXavjkVgqwJFzSqAuCKEHLcP1WjjMXs72EEmt9I3YV26/3h7PAI2DTS6KU6QBQkY0DE0+UEItfFK9A4IXh3thdYbvriCyu5uiAHlTTkwAbePwyLMwlX15XGg02Z1NwaDQnEJyCb6bVp5Z/VCRg2a4ssRIF335yQKKju79bvUwBFnxaCNII/MD8PKRbJ4HALm09afREflBoOKQgARAjBq4kzT1opsjOl4G8gnRZQDnde8blVEQUGqW68qKoH4UzlQWB7u/4F9tVEpaji6NzRuRu04QRiqgypFmEGhlDK9nV1s2hhnN4IRNmW1viQSTogVkpvWWmy6b1JAxHH7UAFn18UAAfWCLVtz7JQ75XqsFzimE1fSKVktQCglALgenIDBI6+xsjR99BcgYJPGgKNoMVq3doMAuAWkGBATpI+XsvmdkD2vpT8bB8YDN4JIoTqmZNLbCEUhYUBoOsM+ciohe6fQl9B0PE1gxFLLg+/AQIx4yMyozySut8nMd78O8IwCtt1nBoGCJJ8UaulfozX4KBw3gcGoe8ERGBo1H/e+chtrXXyUUUhC2oEenpZmJOvS2XP3LT71IBtwn74nF3jmsY42XlsW4dESMeAfGSTJBAza1fYiqnamk+pbpQB/yGQRivEGhw5PwKFmpKsY5PI94s63bJ5TwLieT6mWYAavBDTb2xIC5F6IrBb94Ppx91bt2TMKLPkPgyF00umcreBK6RPOX9vrfVnzT4u/KT/JL9rXcFL6tLgvfPkiptR9UpoL6Ebktlw89Uo5oI/E682rPO6uiQ9RYLY1+9eWSpHyX4unY/hHdqgBaaS+k6k+xAib2fsSUwhU5nv6hnXEjjYTSq/EoeXFQ73nrddDRjY1TcxHn//JFXcV1lSDRHRq+4bXZ88r8Brn/PPI1s7Pf2HL5XL58+v9ldsP8eyflgLQuQI//O6//+5HvBAByyfBcFOsP/V7VGmY62qIre9fITloZJNruHqCBtppgW4tWSJoNfv8cL/39fsDbMAuJisTu3xOJ8lWXdihClTmzYf9RnMAAsZN2T7Djm7xBK5cqMA1xhYPsv8HSQ5qTPKo9GTUUevz4aYkb8lhQNTYdE27/6uH/AxIc/U+sDxlceLVcEziyP/4cU7iqrq4f/P+CQAO7Iy6CLG9lucmGttwDV0RKubpJYyo2tDTMePskPu3xX8JfXO+103OVX/3HRPkvA8M53+qf31tn37QxX+W3oou8YUIeKeVsO7EwI041k3nlayJAjG79Mptzxrn0QigLatzvJbzHaMgp/Nf6A+/+8PVf/6eATk/Pz8/P9f/+e4flz/87/sfwq8+GZZPXfrA7lhRS5pgypS3JPZKmwzovF69QhHVVd0O+UGgQ3/iMlzc35TC6SfShujDVb//UMa26JrsRoTJofHfZg2QzVyfzVoH/zRcA63KtGba27qmbOC1ph1bR6funt70sNQL2fOB/lBiIuT1vBiTgCnkav0uu1IDqECFWwH84UNZF0C0A657dqgCS1+2bMupAp+qH2NPRRI+LXGO5fJTvcQnLJdPW9+xCICKrsmuRUBpp8fNDa56R8XqUalIO4DZVX3wZQ9GAMCP8HMoPuFnsdcw/WSffvwUDdg86qf+v5YHX/QIkkoDe4Wzt6JhxSDpHaj0zeMqlSk54yQnOclJTnKSk5zkJCc5yUlOcpKTnOQkJznJSQ6W/wP4tPyoPpA9lQAAAABJRU5ErkJggg==">
 <style>
   /* デジタル庁デザインシステム準拠(高コントラスト・視認性重視のライトテーマ) */
   :root{
@@ -71,8 +71,9 @@
     .presets button.sel, .btn.main, .signbtn.on{ color:#0C0C0E; }
     /* 共有ボタンは明暗どちらでも LINE 緑 + 黒文字(打ち消し不要だが意図を明示) */
     .btn.main.linebtn{ color:#0C0C0E; }
-    /* 黒いロゴは暗い背景で見えないので白へ反転(透過部分はそのまま残る) */
-    header h1 .logo{ filter:invert(1); }
+    /* ⚠️ ロゴを filter:invert(1) で反転しないこと。白・黒・赤の3色なので赤が水色に化けます。
+       暗い背景では黒い龍が沈むため、白いプレートを敷いて読めるようにする(§6-34)。 */
+    header h1 .logo{ background:#FFFFFF; border-radius:10px; padding:5px 9px; }
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   /* 下部ナビの高さ + iPhone のホームバー(safe-area)分だけ本文の下に余白を取る */
@@ -92,9 +93,8 @@
     border-bottom:2px solid var(--acc);}
   header h1{margin:0; font-size:20px; letter-spacing:1px; color:var(--txt); font-weight:700;
     display:flex; align-items:center; justify-content:center; gap:8px;}
-  /* ロゴ画像。黒1色の透過PNGを data URL で埋め込んでいる(外部依存を作らないため)。
-     ⚠️ ダークモードでは背景が暗いので filter:invert(1) で白に反転させる。
-        別のロゴに差し替えるときも「黒1色・背景透過」を守ること(色付きだと反転で破綻する)。 */
+  /* ロゴ画像。透過PNGを data URL で埋め込んでいる(外部依存を作らないため)。
+     ⚠️ 色付き(黒・白・赤)なので反転フィルタは使えない。ダークモードは白プレートで対応(§6-34)。 */
   header h1 .logo{display:block; height:32px; width:auto; max-width:min(70vw, 280px);}
   nav{position:fixed; bottom:0; left:0; right:0; display:flex; background:var(--card);
     border-top:1px solid var(--line2); z-index:10; box-shadow:0 -2px 8px rgba(26,26,28,.06);
@@ -235,6 +235,20 @@
   /* 卓の参加メンバーを変えるボタンの置き場(§6-31)。
      ⚠️ 参加メンバーの一覧をここに常時表示しないこと。ダイアログの中だけで見せる。 */
   .poolbar{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px;}
+  /* 点数表(§6-33)。符×翻は横に広いので、はみ出す分は横スクロールさせる。
+     ⚠️ 文字を小さくして詰め込まないこと。打ちながら片手で見る画面です。 */
+  .tblwrap{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .scoretbl{width:100%; border-collapse:collapse; font-size:13px;}
+  .scoretbl th, .scoretbl td{border:1px solid var(--line); padding:5px 4px; text-align:center; white-space:nowrap;}
+  .scoretbl tr>th:first-child{background:var(--card2); font-weight:700; width:48px;}
+  .scoretbl thead th, .scoretbl tr:first-child th{background:var(--card2);}
+  .scoretbl td b{display:block; font-size:14px; font-weight:700;}
+  .scoretbl td .sub2{display:block; font-size:11px; color:var(--sub); margin-top:1px;}
+  .scoretbl td.na{background:var(--line); }          /* 成立しない組み合わせ */
+  .scoretbl td.mangan{background:var(--acc-bg); color:var(--acc); font-weight:700;}
+  .futbl th:first-child{width:auto; white-space:nowrap;}
+  .futbl td{text-align:left; white-space:normal;}
+  .futbl .sub3{color:var(--sub); font-size:12px;}
   .setgrid{display:flex; gap:8px; margin-top:8px;}
   .setgrid>div{flex:1; background:var(--card2); border:1px solid var(--line); border-radius:8px; padding:10px 6px; text-align:center;}
   .setgrid .setlabel{display:block; font-size:12px; color:var(--sub); font-weight:600;}
@@ -318,10 +332,10 @@
 <body>
 <header>
   <!-- ロゴは外部ファイルに依存しないよう data URL で埋め込んでいる(単一HTMLの原則)。
-       差し替えるときは「黒1色・背景透過・横長(約4:1)」のPNGにすること。
-       グレースケール+アルファ(LA)で保存すると、見た目そのままで3割ほど軽くなる。 -->
+       ⚠️ 現在のロゴは「黒・白・赤」の3色。**filter:invert(1) を使わないこと**(赤が水色になります)。
+          暗い背景では白いプレートを敷いて視認性を確保している(ダークモードのCSSを参照・§6-34)。 -->
   <h1><img class="logo" width="430" height="105" alt="マーログ"
-    src="data:image/png;base64,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"></h1>
+    src="data:image/png;base64,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"></h1>
 </header>
 <main>
 
@@ -423,6 +437,32 @@
   </div>
 </section>
 
+<!-- ============ 点数表(早見。対局の記録とは独立した参照用)§6-33 ============ -->
+<section id="tab-score">
+  <div class="card">
+    <div class="gtitle">
+      <span style="font-size:16px; font-weight:700;">点数表</span>
+      <div class="presets" id="whoPresets" role="group" aria-label="子か親かを選ぶ">
+        <button type="button" data-v="child">子</button><button type="button" data-v="parent">親</button>
+      </div>
+    </div>
+    <div id="scoreTable"></div>
+    <div class="row mt" style="align-items:center;">
+      <label for="kiriageChk" style="margin:0;">切り上げ満貫</label>
+      <input type="checkbox" id="kiriageChk" style="width:auto; flex:0 0 auto; min-height:24px;"
+        onchange="setKiriage(this.checked)">
+    </div>
+  </div>
+  <div class="card">
+    <h2>満貫以上</h2>
+    <div id="bigTable"></div>
+  </div>
+  <div class="card">
+    <h2>符の数え方</h2>
+    <div id="fuTable"></div>
+  </div>
+</section>
+
 <!-- ============ メンバー(ダッシュボード: 縦スクロール1画面完結) ============ -->
 <section id="tab-members">
   <div id="membersMain">
@@ -492,6 +532,11 @@
     <span class="navicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 7.5L12 12.5l3.5-5"/><path d="M12 12.5V17"/><path d="M9.5 13.5h5"/><path d="M9.5 15.8h5"/></svg></span>精算</button>
   <button id="nav-members" onclick="showTab('members')">
     <span class="navicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span>メンバー</button>
+  <!-- 点数表タブ。⚠️ ナビの最後に置くこと(参照用で、記録の流れ=対局→精算→メンバー を割らない)。
+       アイコンは千点棒。⚠️ 点は r=1.8 以上にすること。
+       22px で描画されるので、小さすぎると枠線と潰れて「ただの楕円」に見えます(§6-33)。 -->
+  <button id="nav-score" onclick="showTab('score')">
+    <span class="navicon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1.5" y="6" width="21" height="12" rx="6"/><circle cx="8" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1.8" fill="currentColor" stroke="none"/></svg></span>点数表</button>
 </nav>
 <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 <div class="overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalMsg">
@@ -545,7 +590,8 @@ let S = load();
 function defaults(){
   return {
     // ⚠️ チップは「増減」で記録する。原点(配給枚数)は持たない(§6-26)
-    settings:{rate:5, uma1:30, uma2:10, chipPrice:500, start:DEF_START, ret:DEF_RET},
+    // kiriage は点数表(§6-33)の表示だけに使うハウスルール。対局の pt 計算には影響しない
+    settings:{rate:5, uma1:30, uma2:10, chipPrice:500, start:DEF_START, ret:DEF_RET, kiriage:true},
     players:[],            // {id, name}
     sessions:[],           // {id, t, closedAt} 集計単位の「卓」。closedAt が null なら進行中
     games:[],              // {sid, t, seats:[pid], scores:[4], pts:[4], ranks:[4], tobi:[{loser}], rate, uma1, uma2}
@@ -578,6 +624,7 @@ function normalize(d){
   // オカ(配給原点・返し点)は後から設定にしたので、古いデータには無い。既定値で補完する(§6-30)
   if(typeof d.settings.start!=='number' || !isFinite(d.settings.start)) d.settings.start = DEF_START;
   if(typeof d.settings.ret  !=='number' || !isFinite(d.settings.ret))   d.settings.ret   = DEF_RET;
+  if(typeof d.settings.kiriage!=='boolean') d.settings.kiriage = true;   // 点数表の表示設定(§6-33)
   d.games.forEach(g=>{
     if(typeof g.rate!=='number' || !isFinite(g.rate)) g.rate = d.settings.rate;
     if(typeof g.uma1!=='number' || !isFinite(g.uma1)) g.uma1 = d.settings.uma1;
@@ -999,6 +1046,108 @@ function calcPts(scores, umaSt, order){
   return {pts, ranks};
 }
 
+/* ---------- 点数表(§6-33) ----------
+   符と翻から点数を出す標準式。**対局タブの pt 計算とは完全に独立した参照用**で、
+   S.games には一切触れない。
+     基本点 = 符 × 2^(2+翻)
+     子ロン = 基本点×4 / 子ツモ = 基本点(子の払い) と 基本点×2(親の払い)
+     親ロン = 基本点×6 / 親ツモ = 基本点×2 オール
+   ⚠️ いずれも100点単位に**切り上げ**。四捨五入にすると 7040→7000 のように1段ずれます。 */
+const SCORE_FU=[20,25,30,40,50,60,70,80,90,100,110];
+let scoreParent=false;      // 表示中が親かどうか(保存しない。開くたび子から)
+function ceil100(n){ return Math.ceil(n/100)*100; }
+function scoreBase(fu,han){ return fu*Math.pow(2,2+han); }
+/* 満貫の判定。⚠️「切り上げ満貫」はハウスルール。
+   ON なら基本点1920以上(=30符4翻・60符3翻も満貫)、OFF なら2000以上。 */
+function isMangan(fu,han){
+  const b=scoreBase(fu,han);
+  return S.settings.kiriage ? b>=1920 : b>=2000;
+}
+/* 成立しない符・翻の組み合わせ(表ではグレーにする)。
+   20符 = 平和ツモのみ(ロン不可。平和だけでは1翻なのでツモが付いて2翻から)
+   25符 = 七対子のみ(ロンは2翻から / ツモは門前ツモが付くので3翻から)
+   110符 = 暗槓などが絡むため1翻では成立しない */
+function fuHanOk(fu,han,tsumo){
+  if(fu===20)  return tsumo && han>=2;
+  if(fu===25)  return tsumo ? han>=3 : han>=2;
+  if(fu===110) return han>=2;
+  return han>=1;
+}
+function ronPoints(fu,han,parent){ return ceil100(scoreBase(fu,han)*(parent?6:4)); }
+function tsumoPoints(fu,han,parent){
+  const b=scoreBase(fu,han);
+  return parent ? {all:ceil100(b*2)} : {ko:ceil100(b), oya:ceil100(b*2)};
+}
+// 満貫以上は符に関係なく固定。[名前, 子ロン, 子ツモ(子払/親払), 親ロン, 親ツモ(オール)]
+const BIG_HANDS=[
+  ['満貫',   8000,[2000, 4000],12000, 4000],
+  ['跳満',  12000,[3000, 6000],18000, 6000],
+  ['倍満',  16000,[4000, 8000],24000, 8000],
+  ['三倍満',24000,[6000,12000],36000,12000],
+  ['役満',  32000,[8000,16000],48000,16000]
+];
+// 符の内訳(一般的な取り決め。ローカルルールで違う場合は卓の取り決めを優先)
+const FU_ROWS=[
+  ['副底(base)','20符','どの手にも必ず付く'],
+  ['門前でロン','+10符','鳴いていたら付かない'],
+  ['ツモ','+2符','平和のときは付けない'],
+  ['明刻(ポン)','中張 2符 / 么九 4符','2〜8は中張、1・9・字牌は么九'],
+  ['暗刻','中張 4符 / 么九 8符',''],
+  ['明槓','中張 8符 / 么九 16符',''],
+  ['暗槓','中張 16符 / 么九 32符',''],
+  ['雀頭が役牌','+2符','連風牌を4符にするかは取り決め次第'],
+  ['待ち','辺張・嵌張・単騎 +2符','両面・シャンポンは0符'],
+  ['合計','10点単位に切り上げ','例 32符 → 40符'],
+  ['平和ツモ','20符で固定','符を足さない'],
+  ['七対子','25符で固定','同上']
+];
+/* ⚠️ 点数の表示に fmt() を使わないこと。fmt() は pt 用で符号(+)が付くため
+   「+7,700」のようになります。点数は符号なしで出すこと。 */
+function sc(n){ return n.toLocaleString(); }
+function setScoreWho(parent){ scoreParent=!!parent; renderScore(); }
+function setKiriage(on){ S.settings.kiriage=!!on; save(); renderScore(); }
+function renderScore(){
+  const p=scoreParent;
+  document.querySelectorAll('#whoPresets button').forEach(b=>
+    b.classList.toggle('sel', (b.dataset.v==='parent')===p));
+  const chk=document.getElementById('kiriageChk');
+  if(chk) chk.checked = !!S.settings.kiriage;
+
+  /* 1セルに「上段=ロン / 下段=ツモ」を入れる。成立しない側は "-" にする。
+     ⚠️ 満貫に達したセルは符に関係なく同じ値なので「満貫」とだけ出す。 */
+  let html='<div class="tblwrap"><table class="scoretbl"><tr><th scope="col">符</th>'
+    + [1,2,3,4].map(h=>`<th scope="col">${h}翻</th>`).join('') + '</tr>';
+  SCORE_FU.forEach(fu=>{
+    html += `<tr><th scope="row">${fu}</th>`;
+    [1,2,3,4].forEach(han=>{
+      const ron=fuHanOk(fu,han,false), tsu=fuHanOk(fu,han,true);
+      if(!ron && !tsu){ html+='<td class="na"></td>'; return; }
+      if(isMangan(fu,han)){ html+='<td class="mangan">満貫</td>'; return; }
+      const t=tsumoPoints(fu,han,p);
+      const tsumoTxt = p ? `${sc(t.all)}オール` : `${sc(t.ko)}/${sc(t.oya)}`;
+      html += `<td><b>${ron?sc(ronPoints(fu,han,p)):'-'}</b>`
+            + `<span class="sub2">${tsu?tsumoTxt:'-'}</span></td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</table></div><div class="hint">上段=ロン / 下段=ツモ</div>';
+  document.getElementById('scoreTable').innerHTML = html;
+
+  document.getElementById('bigTable').innerHTML =
+    '<div class="tblwrap"><table class="scoretbl"><tr><th scope="col"></th><th scope="col">ロン</th><th scope="col">ツモ</th></tr>'
+    + BIG_HANDS.map(([name,kr,kt,or_,ot])=>{
+        const ron = p ? or_ : kr;
+        const tsu = p ? `${sc(ot)}オール` : `${sc(kt[0])}/${sc(kt[1])}`;
+        return `<tr><th scope="row">${name}</th><td><b>${sc(ron)}</b></td><td><b>${tsu}</b></td></tr>`;
+      }).join('')
+    + '</table></div>';
+
+  document.getElementById('fuTable').innerHTML =
+    '<div class="tblwrap"><table class="scoretbl futbl"><tr><th scope="col">項目</th><th scope="col">符</th><th scope="col">メモ</th></tr>'
+    + FU_ROWS.map(([a,b,c])=>`<tr><th scope="row">${a}</th><td>${b}</td><td class="sub3">${c}</td></tr>`).join('')
+    + '</table></div>';
+}
+
 /* ---------- タブ ---------- */
 function showTab(t){
   document.querySelectorAll('section').forEach(s=>s.classList.remove('on'));
@@ -1009,6 +1158,7 @@ function showTab(t){
   if(t==='total') renderTotal();
   if(t==='game'){ renderSettings(); renderGame(); renderHistory(); }
   if(t==='members'){ showMembersMain(); renderMembers(); renderGroupList(); }
+  if(t==='score') renderScore();
 }
 let settingsOpen=false;
 function toggleSettings(){
@@ -1099,6 +1249,9 @@ document.getElementById('ratePresets').addEventListener('click', e=>{
 document.getElementById('umaPresets').addEventListener('click', e=>{
   if(e.target.dataset.v){ const [s,l]=e.target.dataset.v.split('-').map(Number);
     S.settings.uma2=s; S.settings.uma1=l; onSettingsChanged(); }
+});
+document.getElementById('whoPresets').addEventListener('click', e=>{
+  const b=e.target.closest('button[data-v]'); if(b) setScoreWho(b.dataset.v==='parent');
 });
 document.getElementById('okaPresets').addEventListener('click', e=>{
   if(e.target.dataset.v){ const [s,r]=e.target.dataset.v.split('-').map(Number);
@@ -2681,6 +2834,51 @@ function runSelfTests(){
     assert('オカ: 未設定なら既定値にフォールバック',
       startOf({})===25000 && retOf({})===30000 && okaOf({})===20);
 
+    /* 点数表(§6-33)。値は一般的な点数表と突き合わせて固定する。
+       ⚠️ ここが崩れると「表に出る点数が全部おかしい」という分かりにくい壊れ方をします。 */
+    assert('点数表: 基本点 = 符×2^(2+翻)', scoreBase(30,3)===960 && scoreBase(40,1)===320);
+    assert('点数表: 100点単位に切り上げ', ceil100(7040)===7100 && ceil100(7000)===7000);
+    // 子
+    assert('点数表: 子 40符3翻ロン 5200', ronPoints(40,3,false)===5200);
+    assert('点数表: 子 30符1翻 1000 / 300・500',
+      ronPoints(30,1,false)===1000 &&
+      tsumoPoints(30,1,false).ko===300 && tsumoPoints(30,1,false).oya===500);
+    assert('点数表: 子 20符2翻ツモ 400/700',
+      tsumoPoints(20,2,false).ko===400 && tsumoPoints(20,2,false).oya===700);
+    assert('点数表: 子 25符2翻ロン 1600', ronPoints(25,2,false)===1600);
+    assert('点数表: 子 110符2翻 7100 / 1800・3600',
+      ronPoints(110,2,false)===7100 &&
+      tsumoPoints(110,2,false).ko===1800 && tsumoPoints(110,2,false).oya===3600);
+    // 親
+    assert('点数表: 親 30符1翻 1500 / 500オール',
+      ronPoints(30,1,true)===1500 && tsumoPoints(30,1,true).all===500);
+    assert('点数表: 親 40符3翻ロン 7700', ronPoints(40,3,true)===7700);
+    assert('点数表: 親 110符2翻 10600 / 3600オール',
+      ronPoints(110,2,true)===10600 && tsumoPoints(110,2,true).all===3600);
+    // 切り上げ満貫の有無で 30符4翻・60符3翻の扱いが変わる
+    const kSnap=S.settings.kiriage;
+    S.settings.kiriage=true;
+    assert('点数表: 切り上げON なら30符4翻は満貫', isMangan(30,4)===true);
+    assert('点数表: 切り上げON なら60符3翻は満貫', isMangan(60,3)===true);
+    assert('点数表: 切り上げON でも25符4翻は満貫でない', isMangan(25,4)===false);
+    S.settings.kiriage=false;
+    assert('点数表: 切り上げOFF なら30符4翻は7700', isMangan(30,4)===false && ronPoints(30,4,false)===7700);
+    assert('点数表: 切り上げOFF なら60符3翻は7700', isMangan(60,3)===false && ronPoints(60,3,false)===7700);
+    assert('点数表: 切り上げに関係なく70符4翻は満貫', isMangan(70,4)===true);
+    S.settings.kiriage=kSnap;
+    // 成立しない符・翻
+    assert('点数表: 20符はロン不可', fuHanOk(20,2,false)===false && fuHanOk(20,4,false)===false);
+    assert('点数表: 20符1翻は不可', fuHanOk(20,1,true)===false);
+    assert('点数表: 25符ロンは2翻から', fuHanOk(25,1,false)===false && fuHanOk(25,2,false)===true);
+    assert('点数表: 25符ツモは3翻から', fuHanOk(25,2,true)===false && fuHanOk(25,3,true)===true);
+    assert('点数表: 110符1翻は不可', fuHanOk(110,1,false)===false);
+    assert('点数表: 30符1翻は成立する', fuHanOk(30,1,false)===true && fuHanOk(30,1,true)===true);
+    // 満貫以上は符に関係なく固定
+    assert('点数表: 役満は子32000・親48000',
+      BIG_HANDS[4][1]===32000 && BIG_HANDS[4][3]===48000);
+    assert('点数表: 満貫ツモは子2000/4000・親4000オール',
+      BIG_HANDS[0][2][0]===2000 && BIG_HANDS[0][2][1]===4000 && BIG_HANDS[0][4]===4000);
+
     // 日付境界(AM5:00)の回帰テスト: 深夜0〜5時は前日扱い
     const base=new Date(2026,0,2,23,50).getTime();     // 1/2 23:50
     const late=new Date(2026,0,3,1,30).getTime();      // 1/3 01:30(同じ卓)
@@ -3068,6 +3266,7 @@ window.hideGroupProfile = hideGroupProfile;
 window.setSeat = setSeat;
 window.selectGroup = selectGroup;
 window.openPoolPicker = openPoolPicker;
+window.setKiriage = setKiriage;
 window.setScore = setScore;
 window.finalizeScore = finalizeScore;
 window.toggleScoreSign = toggleScoreSign;
