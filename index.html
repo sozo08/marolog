@@ -103,7 +103,10 @@
   nav button .navicon svg{width:22px; height:22px; display:block; margin:0 auto;}
   main{max-width:560px; margin:0 auto; padding:12px;}
   section{display:none;}
-  section.on{display:block;}
+  /* ⚠️ min-height を外さないこと。タブごとに中身の高さが違うと、ページ全体の高さが
+     切り替えのたびに変わり、スマホでは URL バーの出入りに連動して**下部ナビが上下に動いて見えます**。
+     どのタブでも最低これだけの高さを確保して、高さの振れ幅を抑えます(§6-35)。 */
+  section.on{display:block; min-height:calc(100vh - 210px);}
   .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:12px;
     box-shadow:0 1px 3px rgba(26,26,28,.08);}
   .card h2{margin:0 0 10px; font-size:16px; color:var(--txt); font-weight:700;
@@ -1145,6 +1148,9 @@ function renderScore(){
 }
 
 /* ---------- タブ ---------- */
+/* ⚠️ タブを切り替えたらスクロール位置を先頭に戻すこと(§6-35)。
+   長いタブで下までスクロールした状態のまま短いタブへ移ると、スクロール位置が
+   行き場を失って跳ね、下部ナビが上下に動いたように見えます。 */
 function showTab(t){
   document.querySelectorAll('section').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('nav button').forEach(b=>{ b.classList.remove('on'); b.removeAttribute('aria-current'); });
@@ -1155,6 +1161,8 @@ function showTab(t){
   if(t==='game'){ renderSettings(); renderGame(); renderHistory(); }
   if(t==='members'){ showMembersMain(); renderMembers(); renderGroupList(); }
   if(t==='score') renderScore();
+  // 再描画が終わってからスクロールを戻す(先に戻すと高さが確定しておらず効かないことがある)
+  try{ window.scrollTo(0,0); }catch(e){ document.documentElement.scrollTop=0; }
 }
 let settingsOpen=false;
 function toggleSettings(){
