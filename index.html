@@ -40,8 +40,6 @@
     --focus:#FFD43D;       /* フォーカスリング(黄) */
     --gold:#8A6A00;        /* 1位(コントラスト比4.5以上) */
     --gold-bg:#FFF3CD;
-    --header-a:#FFFFFF;    /* ヘッダー背景グラデーション */
-    --header-b:#F3F6FF;
     --line-green:#06C755;      /* LINE ブランドカラー(共有ボタン) */
     --line-green-dark:#05A948; /* 押したときの色 */
   }
@@ -63,17 +61,12 @@
       --focus:#FFD43D;
       --gold:#E8C24A;
       --gold-bg:#3A331A;
-      --header-a:#1E2026;
-      --header-b:#191B2E;
     }
     /* ダークモードのアクセント色は明るいので、その上に載せる文字は暗色にしないと
        コントラスト比が足りない(白文字だと 2〜3:1 程度にしかならない) */
     .presets button.sel, .btn.main, .signbtn.on{ color:#0C0C0E; }
     /* 共有ボタンは明暗どちらでも LINE 緑 + 黒文字(打ち消し不要だが意図を明示) */
     .btn.main.linebtn{ color:#0C0C0E; }
-    /* ⚠️ ロゴを filter:invert(1) で反転しないこと。白・黒・赤の3色なので赤が水色に化けます。
-       暗い背景では黒い龍が沈むため、白いプレートを敷いて読めるようにする(§6-34)。 */
-    header h1 .logo{ background:#FFFFFF; border-radius:10px; padding:5px 9px; }
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   /* 下部ナビの高さ + iPhone のホームバー(safe-area)分だけ本文の下に余白を取る */
@@ -89,12 +82,15 @@
      ホーム画面から起動(standalone)すると status-bar-style:black-translucent により
      コンテンツがステータスバーの下まで広がるため、足さないとロゴが時計に重なります(§6-32)。 */
   header{padding:calc(16px + env(safe-area-inset-top, 0px)) 16px 12px; text-align:center;
-    background:linear-gradient(180deg, var(--header-a) 0%, var(--header-b) 100%);
+    /* ⚠️ ロゴの載る帯は**明暗どちらでも白**にすること(ダークモードでも白のまま)。
+       ロゴが黒・白・赤の3色なので、背景が暗いと黒い龍が沈みます。
+       ここを var(--card) などテーマ追従の色に戻さないこと(§6-34)。 */
+    background:#FFFFFF;
     border-bottom:2px solid var(--acc);}
-  header h1{margin:0; font-size:20px; letter-spacing:1px; color:var(--txt); font-weight:700;
+  header h1{margin:0; font-size:20px; letter-spacing:1px; color:#1A1A1C; font-weight:700;
     display:flex; align-items:center; justify-content:center; gap:8px;}
   /* ロゴ画像。透過PNGを data URL で埋め込んでいる(外部依存を作らないため)。
-     ⚠️ 色付き(黒・白・赤)なので反転フィルタは使えない。ダークモードは白プレートで対応(§6-34)。 */
+     ⚠️ 色付き(黒・白・赤)なので反転フィルタは使えない。帯を白に固定して対応(§6-34)。 */
   header h1 .logo{display:block; height:32px; width:auto; max-width:min(70vw, 280px);}
   nav{position:fixed; bottom:0; left:0; right:0; display:flex; background:var(--card);
     border-top:1px solid var(--line2); z-index:10; box-shadow:0 -2px 8px rgba(26,26,28,.06);
@@ -333,7 +329,7 @@
 <header>
   <!-- ロゴは外部ファイルに依存しないよう data URL で埋め込んでいる(単一HTMLの原則)。
        ⚠️ 現在のロゴは「黒・白・赤」の3色。**filter:invert(1) を使わないこと**(赤が水色になります)。
-          暗い背景では白いプレートを敷いて視認性を確保している(ダークモードのCSSを参照・§6-34)。 -->
+          ロゴの帯は明暗どちらでも白地に固定してある(§6-34)。 -->
   <h1><img class="logo" width="430" height="105" alt="マーログ"
     src="data:image/png;base64,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"></h1>
 </header>
