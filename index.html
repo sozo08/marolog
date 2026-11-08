@@ -163,11 +163,13 @@
         文字を小さくして詰め込まないこと。 */
   .sheet{width:100%; border-collapse:collapse; font-size:14px;}
   .sheet th, .sheet td{border:1px solid var(--line); padding:0; text-align:center; white-space:nowrap;}
-  .sheet tr:first-child th{background:var(--card2); font-weight:700; padding:6px 8px; font-size:13px;}
-  .sheet tr>th:first-child{background:var(--card2); width:40px; min-width:40px; font-weight:700;}
-  .sheet td{padding:0; min-width:58px; font-weight:700;}
+  .sheet tr:first-child th{background:var(--card2); font-weight:700; padding:6px 2px; font-size:12px;}
+  /* ⚠️ 局の列はできるだけ細く。ここを広げるとメンバー列が入りきりません(§6-46) */
+  .sheet tr>th:first-child{background:var(--card2); width:26px; min-width:26px; font-weight:700; font-size:12px;}
+  /* ⚠️ min-width を付けないこと。列が縮まなくなり、5人以上で横に溢れます(§6-46) */
+  .sheet td{padding:0; font-weight:700;}
   .sheet tr.done td{padding:0 2px;}
-  .sheet tr.inrow td{padding:3px 3px 4px;}
+  .sheet tr.inrow td{padding:3px 2px 4px;}
   .sheet tr.done td.out{color:var(--line2); font-weight:400;}   /* 不参加は 0 扱い(§6-37) */
   .sheet tr.editing{outline:2px solid var(--acc); outline-offset:-2px; background:var(--acc-bg);}
   /* 局番号は編集を開くボタン。行全体をボタンにすると点数が読みづらいので番号だけにする */
@@ -195,21 +197,37 @@
   /* 入力セルは [±][入力欄][00] の横並び。⚠️ ± は入力欄の**頭**に置くこと(§6-38)
      ⚠️ タップ領域は 44px 以上(WCAG 2.5.5)。縮めないこと。
      ⚠️ 5人以上だと横幅が足りなくなるので .tblwrap の横スクロールを外さないこと。 */
-  .sheet .cellwrap{display:flex; align-items:stretch; gap:2px;}
-  .sheet .cellsign{flex:0 0 auto; width:28px; min-height:44px; border:1px solid var(--acc);
+  .sheet .cellwrap{display:flex; align-items:stretch; gap:1px;}
+  .sheet .cellsign{flex:0 0 auto; width:24px; min-height:44px; border:1px solid var(--acc);
     background:var(--card); color:var(--acc); font-weight:700; font-size:13px; cursor:pointer;
-    border-radius:6px; padding:0;}
+    border-radius:5px; padding:0;}
   .sheet .cellsign.on{background:var(--acc); color:#FFFFFF;}
   /* 入力した3桁の後ろに「00」を添えて、素点(百点単位)だと分かるようにする */
-  .sheet .unit00{flex:0 0 auto; align-self:center; font-size:10px; color:var(--sub); font-weight:600;}
+  .sheet .unit00{flex:0 0 auto; align-self:center; font-size:9px; color:var(--sub); font-weight:600; letter-spacing:-.5px;}
+  /* 狭い画面ではさらに詰める(§6-46) */
+  /* 狭い画面(iPhone 幅)で5人ぶんの列を入れるための詰め(§6-46)。
+     ⚠️ ± の幅を 24px より細くしないこと(タップ領域の下限)。
+     ⚠️ 入力欄は3桁(例 400)が収まる幅を確保すること。ここを削ると数字が隠れます。 */
+  @media (max-width:400px){
+    .sheet{font-size:13px;}
+    .sheet tr>th:first-child{width:20px; min-width:20px; font-size:11px;}
+    .sheet tr:first-child th{padding:6px 1px; font-size:11px;}
+    .sheet .cellsign{width:24px; font-size:12px;}
+    .sheet tr.inrow input{font-size:14px;}
+    .sheet .unit00{font-size:8px;}
+    .sheet .cellwrap{gap:1px;}
+    .sheet tr.inrow td{padding:3px 1px 4px;}
+    .sheet tr.done td, .sheet tr.sumrow td{padding:0 1px;}
+    .sheet tr.sumrow th, .sheet tr.sumrow td{padding:11px 1px;}
+  }
   /* 入力行は「ここに打つ」と分かるよう背景を変える。
      ⚠️ セル(td)側に色を付けること。input だけだと枠が見えず空行に見えます。 */
   .sheet tr.inrow th{background:var(--acc-bg); color:var(--acc);}
   .sheet tr.inrow td{background:var(--acc-bg);}
   /* ⚠️ 入力欄は枠と白背景を付けること。透明にすると「打てる場所」に見えません(§6-37) */
-  .sheet tr.inrow input{flex:1 1 auto; width:100%; min-width:38px; min-height:44px;
-    border:1px solid var(--line2); border-radius:6px; background:var(--card); text-align:center;
-    font-size:16px; font-weight:700; padding:2px 1px; color:var(--txt);}
+  .sheet tr.inrow input{flex:1 1 auto; width:100%; min-width:0; min-height:44px;
+    border:1px solid var(--line2); border-radius:5px; background:var(--card); text-align:center;
+    font-size:15px; font-weight:700; padding:2px 0; color:var(--txt);}
   .sheet tr.inrow input.on{border-color:var(--acc);}
   .sheet tr.inrow input.minus{color:var(--red);}
   .sheet tr.sumrow th, .sheet tr.sumrow td{background:var(--card2); font-size:15px;}
@@ -394,8 +412,9 @@
      要素を小さくするのではなく、余白と文字サイズだけを落として
      タップ領域(44px)は維持する。 */
   @media (max-width:400px){
-    main{padding:10px 8px;}
-    .card{padding:13px 12px; border-radius:10px;}
+    /* ⚠️ スコア表の横幅を稼ぐため、外側の余白を詰めている(§6-46) */
+    main{padding:8px 6px;}
+    .card{padding:12px 9px; border-radius:10px;}
     table{font-size:13px;}
     th,td{padding:7px 2px;}
     th{font-size:11px;}
@@ -1912,6 +1931,7 @@ function renderGame(){
         <input type="text" inputmode="numeric" data-pid="${id}"
           aria-label="${esc(pname(id))} の持ち点(下2桁を省略)"
           onfocus="focusCell(${id})" oninput="setCell(${id}, this.value)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault(); this.blur();}"
           onblur="finalizeCell(${id}, this.value)">
         <span class="unit00" aria-hidden="true">00</span>
       </div></td>`).join('')
@@ -2324,7 +2344,7 @@ function renderExpenses(){
       <button type="button" class="btn small main" onclick="commitVenue('${d}')">確定</button>
     </div>`;
   if(!pids.length){ el.innerHTML=head+'<div class="hint mt">参加者が未確定です</div>'; return; }
-  if(!v){ el.innerHTML=head+`<div class="hint mt">総額を入れると ${pids.length}人で等分します</div>`; return; }
+  if(!v){ el.innerHTML=head; return; }
   const shares=venueShareMap(d);
   el.innerHTML = head +
     `<table class="mt"><tr><th scope="col">名前</th><th scope="col">1人あたり</th></tr>`+
@@ -2465,8 +2485,11 @@ function dayParticipants(sid){
 /* チップの編集中 pid(§6-42)。表のセルを入力に切り替えるのに使う。
    ⚠️ 再描画のたびにクリアしないこと。 */
 let chipEditPid = null;
+/* ⚠️ focus だけにすること。select() すると既存の値が全選択され、
+   「直すつもりが1文字打っただけで消えた」という事故になります(§6-46)。 */
 function editChip(pid){ chipEditPid=+pid; renderTotal();
-  setTimeout(()=>{ const i=document.querySelector(`#settleTable input[data-chip="${pid}"]`); if(i){ i.focus(); i.select&&i.select(); } },0); }
+  setTimeout(()=>{ const i=document.querySelector(`#settleTable input[data-chip="${pid}"]`);
+    if(i){ i.focus(); try{ const n=i.value.length; i.setSelectionRange(n,n); }catch(e){} } },0); }
 /* チップの検算。⚠️ 入力の途中では出さないこと(全員そろってから・§6-26)。 */
 function chipNote(){
   const d=settleSid;
@@ -2476,9 +2499,10 @@ function chipNote(){
   const entered=Object.keys(c).length;
   const diff=Object.values(c).reduce((a,n)=>a+(n-CHIP_ORIGIN),0);
   if(!pids.length) return '';
+  /* ⚠️ メッセージは短く。長い説明文を戻さないこと(§6-46) */
   if(entered>=pids.length){
-    return diff===0 ? `<div class="ok">✓ チップの増減 合計0枚</div>`
-      : `<div class="warn">チップの増減が ${fmt(diff)}枚 です(0になるはず・入力を確認してください)</div>`;
+    return diff===0 ? `<div class="ok">✓ 合計 0枚</div>`
+      : `<div class="warn">エラー: 合計 ${fmt(diff)}枚</div>`;
   }
   /* ⚠️ 入力途中にヒント文を出さないこと(§6-44)。
      入力欄のプレースホルダ(0)と、全員そろったときの検算で足ります。 */
@@ -2615,7 +2639,8 @@ function chipCell(pid, closed){
       aria-label="${esc(pname(pid))} の符号を切り替え" onclick="toggleChipSign('${d}',${pid})">${minus?'-':'+'}</button>
     <input type="text" inputmode="numeric" data-chip="${pid}" placeholder="0"
       aria-label="${esc(pname(pid))} の増減枚数(原点からの差)"
-      value="${has?delta:''}" onchange="setDayChip('${d}',${pid},this.value)"></span>`;
+      value="${has?delta:''}" onchange="setDayChip('${d}',${pid},this.value)"
+      onkeydown="if(event.key==='Enter'){event.preventDefault(); this.blur();}"></span>`;
 }
 function renderSettleTable(ts){
   const el=document.getElementById('settleTable');
@@ -3280,15 +3305,15 @@ function runSelfTests(){
     assert('チップ表示: 所持枚数から求めた増減が表のセルに出る',
       /\+5枚/.test(chipHtml) && /-2枚/.test(chipHtml));
     // ゼロサムのチェック: 全員そろうまでは警告を出さない
-    assert('チップ検算: 入力途中は警告を出さない', !/0になるはず/.test(chipHtml));
+    assert('チップ検算: 入力途中は警告を出さない', !/エラー/.test(chipHtml));
     S.chips={930:{price:500, counts:{1:25, 2:18, 3:20, 4:20}, v:CHIP_FMT}}; // 増減合計 +3枚
     renderSettleTable(totals(930));
     const badHtml=document.getElementById('settleTable').innerHTML;
-    assert('チップ検算: 全員そろって合計が0でなければ警告', /0になるはず/.test(badHtml) && /\+3枚/.test(badHtml));
+    assert('チップ検算: 全員そろって合計が0でなければ警告', /エラー: 合計/.test(badHtml) && /\+3枚/.test(badHtml));
     S.chips={930:{price:500, counts:{1:25, 2:18, 3:20, 4:17}, v:CHIP_FMT}}; // 増減合計 0
     renderSettleTable(totals(930));
     assert('チップ検算: 合計0なら OK 表示',
-      /増減 合計0枚/.test(document.getElementById('settleTable').innerHTML));
+      /✓ 合計 0枚/.test(document.getElementById('settleTable').innerHTML));
     /* 精算を確定した卓は、チップのセルが入力欄にならないこと(§6-42) */
     S.sessions=[{id:930,t:Date.now(),closedAt:Date.now()}];
     renderSettleTable(totals(930));
