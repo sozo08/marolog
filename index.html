@@ -71,6 +71,15 @@
     .btn.main.linebtn{ color:#0C0C0E; }
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  /* ⚠️ iOS Safari は font-size が 16px 未満の入力欄にフォーカスすると**画面を勝手に拡大**します。
+     拡大したまま戻らないので「タブを切り替えると全体が大きい」「入力のたびに画面が揺れる」
+     ように見えます。入力系のフォントを 16px 未満にしないこと(§6-53)。
+     maximum-scale=1 で止める手もありますが、ピンチ拡大まで殺すので採用しません。 */
+  input, select, textarea{font-size:16px;}
+  /* ダブルタップ拡大による微妙な揺れも止める(ピンチ拡大・スクロールは残る) */
+  html{touch-action:manipulation;}
+  /* タブのスライド演出で横に溢れてもスクロールバーを出さない(§6-54) */
+  body{overflow-x:hidden;}
   /* 下部ナビの高さ + iPhone のホームバー(safe-area)分だけ本文の下に余白を取る */
   body{margin:0; font-family:"Noto Sans JP","Hiragino Sans",-apple-system,BlinkMacSystemFont,sans-serif;
     background:var(--bg); color:var(--txt); font-size:16px; line-height:1.5;
@@ -108,7 +117,19 @@
   /* ⚠️ min-height を外さないこと。タブごとに中身の高さが違うと、ページ全体の高さが
      切り替えのたびに変わり、スマホでは URL バーの出入りに連動して**下部ナビが上下に動いて見えます**。
      どのタブでも最低これだけの高さを確保して、高さの振れ幅を抑えます(§6-35)。 */
-  section.on{display:block; min-height:calc(100vh - 210px);}
+  section.on{display:block; min-height:calc(100vh - 210px);
+    transition:transform .14s ease-out;}
+  /* 指で動かしている間はアニメーションを切って、指にぴたりと追従させる(§6-54) */
+  section.swiping{transition:none;}
+  /* 切り替わった側は、指が進んだ向きから滑り込んでくる */
+  @keyframes slideFromRight{from{transform:translateX(26%); opacity:.35;} to{transform:none; opacity:1;}}
+  @keyframes slideFromLeft{from{transform:translateX(-26%); opacity:.35;} to{transform:none; opacity:1;}}
+  section.slide-left{animation:slideFromRight .2s ease-out;}
+  section.slide-right{animation:slideFromLeft .2s ease-out;}
+  @media (prefers-reduced-motion: reduce){
+    section.on{transition:none;}
+    section.slide-left, section.slide-right{animation:none;}
+  }
   .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:12px;
     box-shadow:0 1px 3px rgba(26,26,28,.08);}
   .card h2{margin:0 0 10px; font-size:16px; color:var(--txt); font-weight:700;
@@ -188,7 +209,7 @@
   /* ⚠️ マイナスのときは赤。スコア表の符号ボタン(.cellsign)と揃える(§6-51) */
   .chipsign.on{background:var(--red); border-color:var(--red); color:#FFFFFF;}
   .chipedit input{flex:0 1 54px; width:54px; min-width:44px; min-height:44px; padding:2px;
-    text-align:center; font-size:15px; font-weight:700;}
+    text-align:center; font-size:16px; font-weight:700; scroll-margin-block:90px;}
   /* 確定済みのセルはボタン。どこを押しても編集に入れる(§6-37) */
   .sheet .cellbtn{display:block; width:100%; min-height:44px; background:none; border:0;
     color:inherit; font-weight:700; font-size:14px; cursor:pointer; padding:4px 2px;}
@@ -230,7 +251,8 @@
     .sheet .cellsign{font-size:11px; min-height:22px; height:22px;}
     .sheet tr.inrow th.nocol{width:46px; min-width:46px;}
     .sheet .okbtn{font-size:11px; padding:10px 1px;}
-    .sheet tr.inrow input{font-size:14px;}
+    /* ⚠️ ここも 16px のまま。下げると iOS が拡大します(§6-53) */
+    .sheet tr.inrow input{font-size:16px;}
     .sheet .unit00{font-size:8px;}
     .sheet .cellwrap{gap:1px;}
     .sheet tr.inrow td{padding:3px 1px 4px;}
@@ -244,7 +266,10 @@
   /* ⚠️ 入力欄は枠と白背景を付けること。透明にすると「打てる場所」に見えません(§6-37) */
   .sheet tr.inrow input{flex:1 1 auto; width:100%; min-width:0; min-height:44px;
     border:0; border-radius:0; background:transparent; text-align:right;
-    font-size:15px; font-weight:700; padding:2px 1px; color:var(--txt);}
+    /* ⚠️ 16px 未満にしないこと(iOS が勝手に拡大します・§6-53) */
+    font-size:16px; font-weight:700; padding:2px 1px; color:var(--txt);
+    /* 次のセルへ移るときのスクロール位置を安定させる */
+    scroll-margin-block:90px;}
   .sheet tr.inrow input.minus{color:var(--red);}
   .sheet tr.sumrow th, .sheet tr.sumrow td{background:var(--card2); font-size:15px;}
   /* 確定ボタンの行。入力行と地続きに見せる(§6-39)
@@ -302,7 +327,7 @@
   .gtitle>.btn, .gtitle>button{flex:0 0 auto;}
   .badge{font-size:11px; border:1px solid var(--line2); border-radius:4px; padding:2px 7px; color:var(--sub);
     font-weight:600; white-space:nowrap;}
-  textarea{width:100%; height:140px; background:var(--card2); border:1px solid var(--line2); border-radius:8px; color:var(--txt); padding:10px; font-size:13px;}
+  textarea{width:100%; height:140px; background:var(--card2); border:1px solid var(--line2); border-radius:8px; color:var(--txt); padding:10px; font-size:16px;}
   .bigmoney{font-size:18px; font-weight:700;}
   /* カード内の小見出し(§6-41) */
   .subhead{font-size:13px; font-weight:700; color:var(--sub); margin:16px 0 4px;
@@ -1315,8 +1340,13 @@ function renderScore(){
 /* ⚠️ タブを切り替えたらスクロール位置を先頭に戻すこと(§6-35)。
    長いタブで下までスクロールした状態のまま短いタブへ移ると、スクロール位置が
    行き場を失って跳ね、下部ナビが上下に動いたように見えます。 */
-function showTab(t){
-  document.querySelectorAll('section').forEach(s=>s.classList.remove('on'));
+/* dir: 'left'(次のタブへ) / 'right'(前のタブへ) のときだけ滑り込む演出を付ける。
+   ⚠️ ナビのボタンから呼ぶときは dir を渡さないこと(タップに演出は要りません)。 */
+function showTab(t, dir){
+  document.querySelectorAll('section').forEach(s=>{
+    s.classList.remove('on','slide-left','slide-right','swiping');
+    s.style.transform='';
+  });
   document.querySelectorAll('nav button').forEach(b=>{ b.classList.remove('on'); b.removeAttribute('aria-current'); });
   document.getElementById('tab-'+t).classList.add('on');
   const nb=document.getElementById('nav-'+t);
@@ -1325,6 +1355,11 @@ function showTab(t){
   if(t==='game'){ renderSettings(); renderGame(); }
   if(t==='members'){ showMembersMain(); renderMembers(); renderGroupList(); }
   if(t==='score') renderScore();
+  if(dir==='left' || dir==='right'){
+    const sec=document.getElementById('tab-'+t);
+    sec.classList.add('slide-'+dir);
+    sec.addEventListener('animationend', ()=>sec.classList.remove('slide-'+dir), {once:true});
+  }
   // 再描画が終わってからスクロールを戻す(先に戻すと高さが確定しておらず効かないことがある)
   try{ window.scrollTo(0,0); }catch(e){ document.documentElement.scrollTop=0; }
 }
@@ -1332,34 +1367,68 @@ function showTab(t){
    ⚠️ 下部ナビの代わりではなく**追加の手段**。ナビのボタンは必ず残すこと
       (スワイプはスクリーンリーダー利用者やキーボード操作では使えません)。 */
 const TAB_ORDER=['game','total','members','score'];
-let swipeX=0, swipeY=0, swipeOk=false;
+const SWIPE_MIN=60;          // これ未満の横移動では切り替えない(縦スクロールの誤爆防止)
+let swipeX=0, swipeY=0, swipeOk=false, swipeSec=null, swipeWrap=null, swipeLock=false;
+/* 横スクロールできる要素(.tblwrap)の上では、その要素が**その向きの端に居るときだけ**
+   スワイプを通す。
+   ⚠️ 以前は .tblwrap の上では一律に無効にしていましたが、点数表タブは中身が丸ごと
+      .tblwrap なので、あのタブからスワイプで戻れなくなっていました(§6-54)。
+      「.tblwrap なら無効」には戻さないこと。 */
+function wrapHoldsSwipe(el, dx){
+  if(!el) return false;
+  const max=el.scrollWidth-el.clientWidth;
+  if(max<=1) return false;                  // そもそも横スクロールしない表
+  return dx<0 ? (el.scrollLeft < max-1) : (el.scrollLeft > 1);
+}
+function tabIndexOf(sec){ return sec ? TAB_ORDER.indexOf(sec.id.replace('tab-','')) : -1; }
+function clearSwipe(){
+  if(swipeSec){ swipeSec.classList.remove('swiping'); swipeSec.style.transform=''; }
+  swipeOk=false; swipeSec=null; swipeWrap=null; swipeLock=false;
+}
 document.addEventListener('touchstart', e=>{
-  if(!e.touches || e.touches.length!==1){ swipeOk=false; return; }
+  clearSwipe();
+  if(!e.touches || e.touches.length!==1) return;
   const t=e.touches[0];
   swipeX=t.clientX; swipeY=t.clientY;
-  /* ⚠️ 横スクロールする要素(スコア表の .tblwrap)と入力系の上では無効にすること。
-     ここを外すと、表を横にスクロールしたつもりでタブが飛びます。 */
   const el=e.target;
-  swipeOk = !(el && el.closest && el.closest('.tblwrap, input, select, textarea, .overlay, canvas'));
+  // ⚠️ 入力系とダイアログの上では無効のまま(入力中に画面が流れると操作できません)
+  if(el && el.closest && el.closest('input, select, textarea, .overlay, canvas')) return;
+  swipeWrap = (el && el.closest) ? el.closest('.tblwrap') : null;
+  swipeSec = document.querySelector('section.on');
+  swipeOk = !!swipeSec;
+}, {passive:true});
+document.addEventListener('touchmove', e=>{
+  if(!swipeOk || !swipeSec || !e.touches || e.touches.length!==1) return;
+  const t=e.touches[0], dx=t.clientX-swipeX, dy=t.clientY-swipeY;
+  if(!swipeLock){
+    if(Math.abs(dx)<10 && Math.abs(dy)<10) return;          // まだ向きが決まらない
+    // 縦に動いている / 表がまだ横に動ける → これはスワイプではない
+    if(Math.abs(dx) < Math.abs(dy)*1.2 || wrapHoldsSwipe(swipeWrap, dx)){ clearSwipe(); return; }
+    swipeLock=true;
+    swipeSec.classList.add('swiping');
+  }
+  // 端のタブでは抵抗をつけて「これ以上ない」ことを伝える
+  const i=tabIndexOf(swipeSec);
+  const atEnd = (dx<0 && i>=TAB_ORDER.length-1) || (dx>0 && i<=0);
+  swipeSec.style.transform = 'translateX('+(atEnd ? dx*0.25 : dx)+'px)';
 }, {passive:true});
 document.addEventListener('touchend', e=>{
-  if(!swipeOk) return;
-  swipeOk=false;
+  const sec=swipeSec, moved=swipeLock;
+  clearSwipe();                       // transform を戻す(transition で滑らかに戻る)
+  if(!sec || !moved) return;
   const ov=document.getElementById('modalOverlay');
   if(ov && ov.classList.contains('show')) return;   // ダイアログ表示中は切り替えない
   const t=(e.changedTouches && e.changedTouches[0]);
   if(!t) return;
   const dx=t.clientX-swipeX, dy=t.clientY-swipeY;
-  /* ⚠️ しきい値を下げすぎないこと。縦スクロールのたびにタブが変わります。
-     横移動が60px以上 かつ 縦移動の1.5倍以上のときだけ切り替える。 */
-  if(Math.abs(dx)<60 || Math.abs(dx)<Math.abs(dy)*1.5) return;
-  const now=document.querySelector('section.on');
-  const i=now ? TAB_ORDER.indexOf(now.id.replace('tab-','')) : -1;
-  if(i<0) return;
+  /* ⚠️ しきい値を下げすぎないこと。縦スクロールのたびにタブが変わります。 */
+  if(Math.abs(dx)<SWIPE_MIN || Math.abs(dx)<Math.abs(dy)*1.5) return;
+  const i=tabIndexOf(sec);
   const next=i + (dx<0 ? 1 : -1);
-  if(next<0 || next>=TAB_ORDER.length) return;
-  showTab(TAB_ORDER[next]);
+  if(i<0 || next<0 || next>=TAB_ORDER.length) return;
+  showTab(TAB_ORDER[next], dx<0 ? 'left' : 'right');
 }, {passive:true});
+document.addEventListener('touchcancel', clearSwipe, {passive:true});
 
 let settingsOpen=false;
 function toggleSettings(){
@@ -3137,6 +3206,19 @@ function runSelfTests(){
 
     // ±の符号モード: 値を入れる前に押しても効き、あとから入力した数字がマイナスになること
     const curBak=JSON.stringify(cur); const acBak=activeCell;
+    /* スワイプの可否判定(§6-54)。点数表タブは中身が丸ごと .tblwrap なので、
+       「.tblwrap なら無効」にすると、あのタブから戻れなくなります。 */
+    const noScroll={scrollWidth:300, clientWidth:300, scrollLeft:0};
+    assert('スワイプ: 横スクロールしない表では常に通す', wrapHoldsSwipe(noScroll,-1)===false && wrapHoldsSwipe(noScroll,1)===false);
+    assert('スワイプ: 要素が無ければ通す', wrapHoldsSwipe(null,-1)===false);
+    const scrollable={scrollWidth:600, clientWidth:300, scrollLeft:0};
+    assert('スワイプ: 左端では左送り(表のスクロール)を優先', wrapHoldsSwipe(scrollable,-1)===true);
+    assert('スワイプ: 左端なら右送りは通す', wrapHoldsSwipe(scrollable,1)===false);
+    const atRight={scrollWidth:600, clientWidth:300, scrollLeft:300};
+    assert('スワイプ: 右端まで来たら左送りを通す', wrapHoldsSwipe(atRight,-1)===false);
+    assert('スワイプ: 右端では右送りは表のスクロール', wrapHoldsSwipe(atRight,1)===true);
+    assert('スワイプ: タブの並びは4つ', TAB_ORDER.length===4 && TAB_ORDER[3]==='score');
+
     try{
       cur = resetCur();
       toggleCellSign(1);                         // 空欄のまま ± を押す
