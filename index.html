@@ -16,12 +16,14 @@
 <meta name="apple-mobile-web-app-title" content="マーログ">
 <!-- サーバーにホストした場合はインストール可能なPWAとしても動作する(file://直接実行時は無効) -->
 <link rel="manifest" id="pwaManifest">
-<!-- ホーム画面アイコン(256×256・白地にマークのみ)。⚠️「マーログ」の文字は入れないこと(小さく潰れます)。外部依存を作らないため data URL で埋め込む。
+<!-- ホーム画面アイコン(256×256・白地にマークのみ)。⚠️「マーログ」の文字は入れないこと(小さく潰れます)。
+     ⚠️ パレット化するときは **白・黒・赤を含む固定パレット**を使うこと(§6-45)。
+        ADAPTIVE に任せると、面積の小さい赤(#F72122)が落ちて「中」が茶色く濁ります。外部依存を作らないため data URL で埋め込む。
      ⚠️ この base64 はファイル内で**ここ1箇所だけ**。manifest の icons は
         setupPWA() がこの link の href を読んで使い回す。2箇所に増やさないこと(§6-32)。
      ⚠️ iOS の「ホーム画面に追加」はこの apple-touch-icon だけを見る(manifest は見ない)。
         消すとアイコンが画面のスクリーンショットになります。 -->
-<link rel="apple-touch-icon" id="pwaIcon" href="data:image/png;base64,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">
+<link rel="apple-touch-icon" id="pwaIcon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAADAFBMVEX///+/v7+AgIBAQEAAAAD9yMj7kJD5WFn3ISKhFRZKCgoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB00sl6AAAL/ElEQVR42u1daZujIAxukqLz+P9/8BbxQI4ASsG6ybfp7kzN9eYEXy8hISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISGh+gQA/zP7ChAR/mf+6UP4bAPn9Av0/hA91wQAPwpm2MP3wwWAWsP4/wrAWHgc5My/v1E91gAmXwAA28+AiwCe6wFvTwCa6dXkFwN4MgR4Cp6VPhmbhwUBnpsHKF8AuKPCwv8DDQDW4A++i++wrxYAeB4CaM7m5G7BOFvDavf6hf/peQ4w612zuKR5NofrR5t1PNEBcBXAinEqkPquAPDAELgIAAH8ILjiPsAGAA+MAKsAAlnO8hGt7D8zBTAYgOhnOVvgezT/iwUQvSMQuNMz+V/iewDkU/yD7g5p+u0u2ZbguAiwAX+Yf7UBI5GWwQ9HgSnI5OFzrwLQ7O+C022yn7UE29At/pWjf4d/dNzjhy3BEoDV7YQjh47+IcS/bQm/1DHZNW2l+Y7+nfQnxv9PWoIFdbsDHDn0GgB7XqTTByL6YUuwnNnmn43+sKP/XEkjEv2sJWwIQHbnb2LUv4UHWkFfzULAsCXQvS1h0zV5nc9o8QNrY+Dl5gU/aAlrAUBLSncM77tY7JFgoGp+/aolrMrUWDaZksh67Ik2E9efLz+tfTOINth+xxJ2AKBVEpMdFGFTqf7cCGAtHZjGiFqRMW4J98sBA/rSAkAvSwr0zYot4R5JM5/NzJoiOxwsLJsQkFUYpy3hNjVQUEsUqgUDo4OzljBRR1+AiHXaOjo+LdpuMxW1RqOWMBF1mrMmkvn54YLNgMDooMwSXLPr0WRSSfVHELEEAllLmLhC4w7aDyPiJ01SFRYkXBm0toEz/KPJk4jq7AcYSyAm2+4W+6P6d7ojVRXR1Al8/r1450crF74rGS2sftDSCTAAbkkB+L9TWRvtTMDv9MOrGBPqKQybOwEEOp1Yign15sMwNY8E6PEPdQ1AqVP6wB4+oAM7FEdF1lzV8KF8GQA1TwaOAsDylJB/1GH8+/sbB1X+NG0k4Oibytnnt0TV8PdXIgFbHS2c4EQSGPAADgDGP0PDCUSCbysfavDPP+cmgDFzJtGuKJrX4KmGAeQJQGXxT18Kr0e9Qy3lpw112AQwZCnl260Bw7epZcsroPIkaMHAXBj0MpDaTrCNuM7Yfvh3+Dpw84A8AeD3cuycrmcq2gWNhtdRmQACKWhdE8g0+4h5BAWQaGFuHpADgqEdk6ot0swcPwYQYQFkG8DJ56vpBEBJhZtZXTgdDgoAt4onkPGrLQb8nYLA2pVmUK9k5/9zTAegKWcucoDAIeTmlgGo8hhYHQXCa1y4E63VMOXyvz2dCXejYwW7AIYLBopfdQFcdjtNcqTiSIkhBW0OurI6fqxgl0FRFhRdM6sHgxC2ANom1PFuiG4UUoYAZhGYDsCHhusIUPU8CqRmf1rW4VQhzP8OULsANjloKqkDon24ZgLw5/+HRjEbonZlh2jM6AgBfr/jGhOAVRUGe+JmT4ivA1kB/KW7YiqepH3XAkzgNxPKZSUI9q2gfWkhkQRZRU/QBDSt2FBonTW7AkjcXwdy8M7eYAp6hgqU/cM4st4whgGBE8DXGoDuYRC03YCctR1fAvaT7Z0vDf6a4nIIlkXxUUTdcsgwuTn9AV/sjjQEtnWQebItD1DRuGBDQgEE1u4KzVzOuiVXiZaKg9tK+z6wbwADIwArHsbyIgYCqzeFPl81bfOfAATEv3fDCH8lghOAzg1dj3BxgAnQ1RujOqLNf3Rei4keB5gCG9FLxogU94DBS4Pnj+a00JbBkIsA37ieZrv/4SMCjXLKG8nQuhbqJuub7zhPtguA6QbbqHA0AcB2BmAY39bAlf52BGcktS5+ORuspm4KHZgdPL4GfyBidQec6oDpVDWYDs2O4BwSgX1lfBfBYWx6xIjB5VYF6sCDAEaVhQDfHA6tdqCvCrBWtMxXwi4C2tsFFJtcxgVgaXo44GCWAL46G4LFwJ2vX6vvQ/rvbzMei3RPAMPoG8AxFqosCPzmbGwOAoo5DQTM9uQRnLdKYFySfeWDglMvWi4AnRBgvgzHLf6mg2bnIy+TVv40sWcm7aRHyyAAgUcHsOJlyyTIb0G541H/MLQ5IAFsmnS07mAn5PBfRrs47gSBkR5c9CsVZgsgpOgj/8ckYIpDoGovAMz6z86TxQufxSVsAHCKwdZJUHJMEPxW5yldO2EbYnMnZIwWw/2SoMikVC+KpboVGNoCmPnkuyGBQrAbAhT14ZNrCx/YN51wthMSaoZ0SoK4+OOfC8b0vSFbq08pNYxMe9h7hqmXAfickZmQuKeWPDmlwNnKClL8s0lQg6NDgO5QwD/JGugF8qqx00I3+yloBba5p/YwB43gPxVGp8Gqg9QRF4cCA2i0KWvSwSXnZ/qABU92LAOUCibGGRDY6PCcOQNudgZ9AbAT4QQCWNm+sQN/ItAvCToC+Jb0542TX1kCOHI7B0iVHtQ03RM+N6/EXAhUkUAZqy/ud0PXqZWdYby0Fdft6GSu/gsh8EwidhcDiG6KZELg64IB3AEBIgCdNIAxfyckbgAT3lT/yfy0ZDm+fxJUrv/3lGsAlzyAut/UHn22XAgcruwE9b+lNfpsU0UIRLqvAPC0AYwFMZBfVrulAyQhsEAA3Mresp6jbsd/CgJVPgRmnFjqlQ3C+QS9BAIzji5QHxHg+TnFUJAEZR7dUPcBwDQ4rx5QxwA63SvFPVkqP10EMKpXFQF0sX/uWFkKAdYYMFzCmc4CYByAMj3gWhnUWQScZpIFijGAa0cDeocBFgGSArh6OKh/Xci6ZrJEH7IPCJccW25qBNyDpVUxZJ4NKr2jpV0uoOh9UQBZAFB6SQ/hHRAgSwB5/EO/W5pON2mznkJl3pNSJgBqOSbkXbHa15QJgKhVSZB4sFpoXHhzhTnZ2kYAbeJRIQSa09zdY0C92hSKr+lS64mGnjGgmg2cuLumVSaUV6JfbdSduL6z0cv8VJZqLpcnxTcVNouCuRfMzA3bb4Xank5Q8Gjn2/aMmU3UeVRYopvprCewHec7rQzmWYGqCYHY7eTM6RLlhCfwLELXhZEzd8uVmkHcyqb4ZbYaG+4qgEIwgNROUOySl0bHJzPKsqAVZHsCtxKi4gL4oGOLvlhSABi/gSQzM0guRscuaoEW719JC4Bba8wCg+RKSPwYl1L9wyAqfqSfnJvwIK8glie1qoUwnY/yTcPEi4KAPRtiDiog9dsZTApgfxF3PCZwxWIiCdI4EraARm3xZDHEpyppM2CTIAP0cOLOznblMCFkdU0iYMAbwOdfKeZit2mIzFCVNdfGvJMHR9+KC0DdSACZJYMPBvzYGUy6C10Xp5NN0VkVKlMC2gxUln/pJOiDP1pmYSl1edNERFUqt3V27KGqxNR1udEo8LqbpgPyjM09eJVczrzeU8d2ggmXK53A/8PUqhLM74uXtk4oeYG9NgCMdIQIseWSSIZql6oVqdLF9EsSRHNDAAMBEDu/cirWmql2Nb/+g8rc6hYQKipouiSUA/Bb3YY0VTEAZRCAwmVQ443pHL0SnB9yhQ0AY90WutWWnJ/kAF7HAmJKzB6LwllZzkSbXV61AuKa4T1OjuXfv7/ftXpFBlyPoc/JsZI0D65HBGTuOu5zciw/ydlvmaNLCBA7n9fr5BzUS3Gyk6B+OwHVBiTXYuCt+G8pgSUJ6tgEKh1gVTcALwbOWwK9Lw84t8VRJwnSJdGNTw7X5d9PgqjhVmR/GPCToLnxDre4PKSFBNB72ec8BHzdgypIID1nscHmFremHCaZl8ucxAsNbQMo2DH4lVhgxkhM02TtBL27HRH+JhCs61PMK4yXLHjetAL1uiedDYe2RlW4WJqzYLql6V82AvdW/tD91OYFDzfWvWUE0wX1W4Kk930Rn5dAmRVElifn6ZCRJdHNzT6lvrKh8EGShu5v9n5OkNX4SyKagp/w+pgZzFdOTvEJICK8Hk3KvI7Mu41+fSPVw9nf/fgogKnTTR9CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkL/F/0DBiD/RN8R+4AAAAAASUVORK5CYII=">
 <style>
   /* デジタル庁デザインシステム準拠(高コントラスト・視認性重視のライトテーマ) */
   :root{
@@ -155,6 +157,75 @@
   .chip-tag{background:var(--card2); border:1px solid var(--line2); border-radius:16px; padding:6px 12px; font-size:14px; display:flex; align-items:center; gap:6px;}
   .chip-tag b{cursor:pointer; color:var(--red);}
   .seatgrid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  /* ---------- 対局タブのスコア表(§6-36) ----------
+     ⚠️ 入力セルは最低 44px 四方を確保すること(WCAG 2.5.5)。
+     ⚠️ 列が増えると横に溢れるので .tblwrap で横スクロールさせる。
+        文字を小さくして詰め込まないこと。 */
+  .sheet{width:100%; border-collapse:collapse; font-size:14px;}
+  .sheet th, .sheet td{border:1px solid var(--line); padding:0; text-align:center; white-space:nowrap;}
+  .sheet tr:first-child th{background:var(--card2); font-weight:700; padding:6px 8px; font-size:13px;}
+  .sheet tr>th:first-child{background:var(--card2); width:40px; min-width:40px; font-weight:700;}
+  .sheet td{padding:0; min-width:58px; font-weight:700;}
+  .sheet tr.done td{padding:0 2px;}
+  .sheet tr.inrow td{padding:3px 3px 4px;}
+  .sheet tr.done td.out{color:var(--line2); font-weight:400;}   /* 不参加は 0 扱い(§6-37) */
+  .sheet tr.editing{outline:2px solid var(--acc); outline-offset:-2px; background:var(--acc-bg);}
+  /* 局番号は編集を開くボタン。行全体をボタンにすると点数が読みづらいので番号だけにする */
+  /* 局番号は中央寄せ。⚠️ 左に寄せないこと(数字がばらついて読みにくい) */
+  .sheet th.nocol{text-align:center; vertical-align:middle;}
+  /* ---------- 精算表の中のチップ入力(§6-42) ----------
+     ⚠️ 入力欄は表の中。外に出さないこと。
+     ⚠️ タップ領域は 44px 以上(WCAG 2.5.5)。 */
+  .settletbl .chipcol{padding:4px 2px;}
+  .chipcell{display:block; width:100%; min-height:44px; background:none; border:0; padding:2px;
+    color:inherit; font:inherit; font-weight:700; cursor:pointer; text-align:right;}
+  .chipcell:active{background:var(--card2);}
+  .chipedit{display:flex; align-items:center; gap:3px; justify-content:flex-end;}
+  .chipsign{flex:0 0 auto; width:30px; min-height:44px; border:1px solid var(--acc); border-radius:6px;
+    background:var(--card); color:var(--acc); font-weight:700; font-size:14px; cursor:pointer; padding:0;}
+  .chipsign.on{background:var(--acc); color:#FFFFFF;}
+  .chipedit input{flex:0 1 54px; width:54px; min-width:44px; min-height:44px; padding:2px;
+    text-align:center; font-size:15px; font-weight:700;}
+  /* 確定済みのセルはボタン。どこを押しても編集に入れる(§6-37) */
+  .sheet .cellbtn{display:block; width:100%; min-height:44px; background:none; border:0;
+    color:inherit; font-weight:700; font-size:14px; cursor:pointer; padding:4px 2px;}
+  .sheet .cellbtn:active{background:var(--acc-bg);}
+  /* 入力した素点(百点単位)を小さくグレーで添える */
+  .sheet .cellbtn .raw{display:block; font-size:11px; color:var(--sub); font-weight:400; margin-top:1px;}
+  /* 入力セルは [±][入力欄][00] の横並び。⚠️ ± は入力欄の**頭**に置くこと(§6-38)
+     ⚠️ タップ領域は 44px 以上(WCAG 2.5.5)。縮めないこと。
+     ⚠️ 5人以上だと横幅が足りなくなるので .tblwrap の横スクロールを外さないこと。 */
+  .sheet .cellwrap{display:flex; align-items:stretch; gap:2px;}
+  .sheet .cellsign{flex:0 0 auto; width:28px; min-height:44px; border:1px solid var(--acc);
+    background:var(--card); color:var(--acc); font-weight:700; font-size:13px; cursor:pointer;
+    border-radius:6px; padding:0;}
+  .sheet .cellsign.on{background:var(--acc); color:#FFFFFF;}
+  /* 入力した3桁の後ろに「00」を添えて、素点(百点単位)だと分かるようにする */
+  .sheet .unit00{flex:0 0 auto; align-self:center; font-size:10px; color:var(--sub); font-weight:600;}
+  /* 入力行は「ここに打つ」と分かるよう背景を変える。
+     ⚠️ セル(td)側に色を付けること。input だけだと枠が見えず空行に見えます。 */
+  .sheet tr.inrow th{background:var(--acc-bg); color:var(--acc);}
+  .sheet tr.inrow td{background:var(--acc-bg);}
+  /* ⚠️ 入力欄は枠と白背景を付けること。透明にすると「打てる場所」に見えません(§6-37) */
+  .sheet tr.inrow input{flex:1 1 auto; width:100%; min-width:38px; min-height:44px;
+    border:1px solid var(--line2); border-radius:6px; background:var(--card); text-align:center;
+    font-size:16px; font-weight:700; padding:2px 1px; color:var(--txt);}
+  .sheet tr.inrow input.on{border-color:var(--acc);}
+  .sheet tr.inrow input.minus{color:var(--red);}
+  .sheet tr.sumrow th, .sheet tr.sumrow td{background:var(--card2); font-size:15px;}
+  /* 確定ボタンの行。入力行と地続きに見せる(§6-39)
+     ⚠️ 全幅にしないこと。表の中で浮いて見えます(§6-40) */
+  .sheet tr.inrow.act td{background:var(--acc-bg); padding:2px 4px 6px; border-top:0;}
+  .sheet tr.inrow.act td.nocol{background:var(--acc-bg); border-top:0; width:40px;}
+  .sheet tr.inrow td{border-bottom:0;}
+  .sheet tr.inrow th{border-bottom:0;}
+  /* メンバー列いっぱいの幅で、天地は控えめに(§6-41) */
+  .sheet tr.inrow.act .btn.main{width:100%; min-width:0; max-width:none;
+    margin:0; padding:8px 12px; font-size:15px;}
+  /* 合計行は数字だけなのでセル自身に高さを持たせる(§6-40) */
+  .sheet tr.sumrow th, .sheet tr.sumrow td{padding:11px 4px;}
+  /* 表のセル内の補足(半荘数・pt・枚数) */
+  td .sub2{display:block; font-size:11px; color:var(--sub); font-weight:400; margin-top:1px;}
   .seatlist{display:flex; flex-direction:column; gap:8px;}
   .seat{background:var(--card2); border:1px solid var(--line); border-radius:8px; padding:10px;}
   .seat .srow{display:flex; gap:8px; align-items:center;}
@@ -200,6 +271,22 @@
     font-weight:600; white-space:nowrap;}
   textarea{width:100%; height:140px; background:var(--card2); border:1px solid var(--line2); border-radius:8px; color:var(--txt); padding:10px; font-size:13px;}
   .bigmoney{font-size:18px; font-weight:700;}
+  /* カード内の小見出し(§6-41) */
+  .subhead{font-size:13px; font-weight:700; color:var(--sub); margin:16px 0 4px;
+    padding-top:14px; border-top:1px solid var(--line);}
+  /* 場代の入力行(§6-43) */
+  .venuerow{display:flex; align-items:center; gap:8px;}
+  .venuerow input{flex:1 1 auto; min-width:0;}
+  .venuerow .btn{flex:0 0 auto;}
+
+
+  /* ---------- 精算タブの数字(§6-40) ----------
+     ⚠️ 金額・枚数の文字サイズは**ここで一括して決める**こと。
+        個々の innerHTML に style="font-size:..." を書くとバラバラになります。 */
+  #settleTable td, #venueArea td{font-size:15px;}
+  #settleTable td .sub2, #venueArea td .sub2{font-size:11px;}
+  .chipresult .meta{font-size:15px;}
+
   .center{text-align:center;}
   .mt{margin-top:10px;}
   /* ---------- 履歴: 「卓の合計」と「各半荘」の親子関係 ----------
@@ -234,6 +321,7 @@
   /* 卓の参加メンバーを変えるボタンの置き場(§6-31)。
      ⚠️ 参加メンバーの一覧をここに常時表示しないこと。ダイアログの中だけで見せる。 */
   .poolbar{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px;}
+  .poolbar #closeSessionBtn{margin-left:auto;}   /* 右端へ寄せる(§6-41) */
   /* 点数表(§6-33)。符×翻は横に広いので、はみ出す分は横スクロールさせる。
      ⚠️ 文字を小さくして詰め込まないこと。打ちながら片手で見る画面です。 */
   .tblwrap{overflow-x:auto; -webkit-overflow-scrolling:touch;}
@@ -385,43 +473,40 @@
       <button class="btn small" id="addMemberBtn" onclick="openPoolPicker()">＋ メンバーを追加</button>
     </div>
     <div id="groupQuick"></div>
-    <div class="hint" id="scoreUnitHint" style="display:none;">下2桁(00)は省略</div>
-    <div class="seatlist mt" id="seats"></div>
+    <!-- 記録帳と同じ「上から下へ積み上がる」スコア表。ヘッダ=メンバー / 行=半荘 / 最下部=合計。
+         入力は表の最下行で行う(§6-36)。 -->
+    <div id="scoreSheet" class="mt"></div>
     <!-- 点数入力中に合計が変わったことをスクリーンリーダーにも伝える -->
     <div id="sumMsg" role="status" aria-live="polite"></div>
-    <button class="btn main mt" id="saveGameBtn" onclick="saveGame()" disabled>確定</button>
-    <button class="btn mt" id="cancelEditGameBtn" style="display:none;" onclick="cancelEditGame()">編集をキャンセル</button>
+    <!-- ⚠️ 確定ボタンは表の「入力中の局」の枠内に置く(renderGame が描く)。ここには出さない(§6-39) -->
+    <div class="row mt" id="editActions" style="display:none;">
+      <button class="btn" onclick="cancelEditGame()">キャンセル</button>
+      <!-- ⚠️ 履歴カードを廃止したので、半荘を消す導線はここにしか無い(§6-37) -->
+      <button class="btn danger" onclick="delEditingGame()">この半荘を削除</button>
+    </div>
   </div>
-  <div id="historyList"></div>
 </section>
 
 <!-- ============ 精算 ============ -->
 <section id="tab-total">
+  <!-- 対局の精算。⚠️ 場代はここに混ぜないこと(下の独立カードが担当・§6-36)
+       ⚠️ 卓の選択カードは廃止した。常に最新の卓を見せる(§6-37) -->
+  <!-- ⚠️ チップはこのカードの中。別カードに戻さないこと。
+       対局の収支とチップは同じ精算の一部で、分けると two-card で見比べる手間が増えます(§6-41) -->
   <div class="card">
-    <label for="settleDatePicker">精算する卓</label>
-    <select id="settleDatePicker" onchange="setSettleSid(this.value)"></select>
+    <h2>対局の精算</h2>
+    <div id="settleTable"></div>
+    <!-- 精算の確定。⚠️ 卓を締める導線はここだけ(対局タブの「集計」は廃止・§6-42)
+         ⚠️ 別カードに出さないこと。精算表とセットで見せる(§6-43) -->
+    <div id="settleConfirmBody" class="mt"></div>
   </div>
+  <!-- 場代。完全割り勘のみ。⚠️ 飲食の個別入力を戻さないこと(§6-36) -->
   <div class="card">
+    <!-- ⚠️ クリアボタンは置かない(§6-44)。金額を空にすれば消えます -->
     <div class="gtitle">
-      <span style="font-size:16px; font-weight:700;">対局</span>
-      <span class="metatext" id="totalScopeLabel"></span>
+      <span style="font-size:16px; font-weight:700;">場代</span>
     </div>
-    <div id="totalTable"></div>
-  </div>
-  <div class="card">
-    <h2>チップ(全ゲーム終了時に入力)</h2>
-    <div id="chipSettle"></div>
-  </div>
-  <div class="card">
-    <div class="gtitle">
-      <span style="font-size:16px; font-weight:700;">場代・飲食</span>
-      <button class="btn small" onclick="clearExpenses()">クリア</button>
-    </div>
-    <div id="expenseArea"></div>
-  </div>
-  <div class="card">
-    <h2>合計</h2>
-    <div id="grandTotal"></div>
+    <div id="venueArea"></div>
   </div>
   <div class="card">
     <h2>共有</h2>
@@ -609,6 +694,22 @@ function normalize(d){
   if(!Array.isArray(d.sessions)) d.sessions=[];
   if(!d.chips || typeof d.chips!=='object') d.chips={};
   if(!d.expenses || typeof d.expenses!=='object') d.expenses={};
+  /* 飲食(personal)と「その他」(others)の個別入力は廃止した(§6-36)。
+     ⚠️ 金額を捨てずに venue へ合算すること。捨てると過去の卓の精算額が変わります。
+     ⚠️ 合算すると「個人ごとの実費」は「全員で割り勘」に変わります。
+        完全割り勘しか無い画面にした以上、この扱いで統一します。 */
+  Object.keys(d.expenses||{}).forEach(k=>{
+    const ex=d.expenses[k];
+    if(!ex || typeof ex!=='object'){ delete d.expenses[k]; return; }
+    let add=0;
+    Object.values(ex.personal||{}).forEach(pp=>{ add += ((pp&&pp.food)||0)+((pp&&pp.drink)||0); });
+    (Array.isArray(ex.others)?ex.others:[]).forEach(it=>{
+      Object.values((it&&it.amounts)||{}).forEach(v=>{ add += (v||0); });
+    });
+    ex.venue = (ex.venue||0) + add;
+    delete ex.personal; delete ex.others; delete ex.splitAll;
+    if(!ex.venue) delete d.expenses[k];
+  });
   // 旧形式 {venue, personal} (日付キーなし) → 今日の日付に移行
   if(d.expenses.venue!==undefined || d.expenses.personal!==undefined){
     const old=d.expenses, day=dstr(Date.now());
@@ -967,7 +1068,9 @@ const ICO = {
 };
 function fmt(n){ return (n>0?'+':'') + n.toLocaleString(); }
 function cls(n){ return n>0?'plus':(n<0?'minus':''); }
-function yen(n){ return (n>0?'+':(n<0?'−':'')) + Math.abs(n).toLocaleString() + '円'; }
+/* ⚠️ マイナス記号は **半角の '-'**(toLocaleString が付ける)で統一すること。
+   U+2212('−')は全角のように広く見え、fmt() の出す '-' と並ぶと揃いません(§6-40)。 */
+function yen(n){ return (n>0?'+':'') + n.toLocaleString() + '円'; }
 function esc(s){ return s.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function pname(id){ const p=S.players.find(p=>p.id===id); return p?p.name:'?'; }
 // 五捨六入 (千点単位のポイント化)
@@ -1158,7 +1261,7 @@ function showTab(t){
   const nb=document.getElementById('nav-'+t);
   nb.classList.add('on'); nb.setAttribute('aria-current','page');
   if(t==='total') renderTotal();
-  if(t==='game'){ renderSettings(); renderGame(); renderHistory(); }
+  if(t==='game'){ renderSettings(); renderGame(); }
   if(t==='members'){ showMembersMain(); renderMembers(); renderGroupList(); }
   if(t==='score') renderScore();
   // 再描画が終わってからスクロールを戻す(先に戻すと高さが確定しておらず効かないことがある)
@@ -1218,7 +1321,7 @@ function reapplySettingsToOpenGames(){
 // 設定を変えたときの共通処理。保存・再計算・再描画をまとめて行う
 function onSettingsChanged(){
   const n=reapplySettingsToOpenGames();
-  save(); renderSettings(); renderGame(); renderHistory();
+  save(); renderSettings(); renderGame();
   if(n) toast(`進行中の卓(${n}局)に反映しました`);
 }
 
@@ -1642,108 +1745,228 @@ function renderGroupProfile(gid){
    モバイルの数字キーパッドにはマイナスキーが無い端末が多いため、±ボタンで切り替える。
    ⚠️ 値を入力する「前」に押せること。空欄でも符号モードだけ先に反転し、
       そのあと入力した数字が自動でマイナスになる(以前は値がないと±が効かなかった)。 */
-let cur = {seats:[null,null,null,null], scores:[null,null,null,null], signs:[1,1,1,1]};
-function resetCur(seats){
-  return {seats: seats||[null,null,null,null], scores:[null,null,null,null], signs:[1,1,1,1]};
-}
+let cur = resetCur();   // ⚠️ 旧形式(seats/scores の配列)に戻さないこと(§6-36)
+/* ---------- 入力中の半荘(§6-36) ----------
+   記録帳と同じ「上から下へ積み上がる表」にしたため、4席固定ではなく
+   **プールの誰が何点か**で持つ。値が入っている人 = その半荘の参加者(=必ず4人)。
+   ⚠️ seats/scores の配列に戻さないこと。5人以上の卓で「空席」の概念が破綻します。 */
+function resetCur(){ return {vals:{}, signs:{}}; }
 let justReset = false;
 // 編集中の確定済み半荘への参照(null=新規入力)。配列インデックスではなくオブジェクト参照で保持することで、
 // 編集中に他の半荘が削除・追加されて配列の並びがずれても、保存時に誤った半荘を上書きしないようにする。
 let editingGame = null;
+/* 直近でフォーカスした入力セルの pid。±(符号)ボタンの対象。
+   ⚠️ blur でクリアしないこと。±を押した瞬間に blur が走るため、消すと対象を見失います。 */
+let activeCell = null;
+/* 「残り」で自動計算して埋めたセルの pid(§6-40)。
+   他の人の点数を直したら、この人の値も追従して計算し直す。
+   ⚠️ 本人が手で打ち直したらここを null にすること(以降は追従させない)。 */
+let autoPid = null;
+/* 自動セルを、他の3人の合計から計算し直す。
+   ⚠️ 自分以外がちょうど3人埋まっているときだけ動かすこと。
+      条件を緩めると、入力の途中で勝手に値が書き換わります。 */
+function syncAutoCell(changedPid){
+  if(autoPid===null || autoPid===changedPid) return;
+  if(cur.vals[autoPid]===undefined){ autoPid=null; return; }
+  const others=curSeats().filter(id=>id!==autoPid);
+  if(others.length!==3) return;
+  const sum=others.reduce((a,id)=>a+cur.vals[id],0);
+  cur.vals[autoPid]=totalScore()-sum;
+  cur.signs[autoPid]= cur.vals[autoPid]<0 ? -1 : 1;
+}
 
+// 表の列(=その卓のメンバー)。編集中の半荘にプール外の人がいる場合は末尾に足す。
+function sheetCols(){
+  let pool=poolIds();
+  if(!pool.length && S.players.length===4){ setPool(S.players.map(p=>p.id)); pool=poolIds(); }
+  const extra=Object.keys(cur.vals).map(Number).filter(id=>!pool.includes(id));
+  const ids=[...pool, ...extra].filter(id=>S.players.some(p=>p.id===id));
+  return ids;
+}
+// 入力済みの人(=この半荘の参加者)。表示順(列順)で返す。
+// ⚠️ 列順がそのまま席順になり、同点時の既定(上家優先)の基準になります。
+function curSeats(){ return sheetCols().filter(id=>cur.vals[id]!==undefined && cur.vals[id]!==null); }
+function curScores(){ return curSeats().map(id=>cur.vals[id]); }
+// 残り(あと1人のときに自動で入る点数)
+function remainScore(){
+  const sum=curSeats().reduce((a,id)=>a+cur.vals[id],0);
+  return totalScore()-sum;
+}
+function signOf(pid){ return cur.signs[pid]===-1 ? -1 : 1; }
+
+/* 入力値(百点単位)と符号モードを合成する。
+   欄に直接マイナスを打った場合(PCなど)は、符号モードの方を入力に合わせて同期する。 */
+function applySign(pid, v){
+  if(v==='' || v==='-' || v==='−') return null;
+  const n=+v;
+  if(!isFinite(n)) return null;
+  if(n<0) cur.signs[pid]=-1;   // 直接マイナスを打った → 符号モードを合わせる
+  return Math.abs(n)*signOf(pid);
+}
+function setCell(pid,v){
+  if(pid===autoPid) autoPid=null;   // 本人が打ち直した → 以降は追従させない
+  const n=applySign(pid,v);
+  if(n===null) delete cur.vals[pid]; else cur.vals[pid]=n*100;
+  syncAutoCell(pid);
+  refreshSheet();
+}
+/* フォーカスアウト時: ここで初めて百点単位の整数に丸める。
+   ⚠️ ここで renderGame() を呼んではいけない。表を丸ごと作り直すと、
+      「入力欄にフォーカスがある状態で ± や別のセルをタップ」したときに
+      ① タップ → ② blur → ③ 表が差し替わってタップ先が DOM から消える
+      ④ pointerup が別要素に着地して click が発火しない
+      となり、1回目のタップが黙って無視されます(§6-3 と同じ罠)。 */
+function finalizeCell(pid,v){
+  const n=applySign(pid,v);
+  if(n===null) delete cur.vals[pid]; else cur.vals[pid]=Math.round(n)*100;
+  syncAutoCell(pid);
+  refreshSheet();
+}
+/* セルにフォーカスが入ったとき。
+   ちょうど3人分だけ埋まっていれば、残りの点数をそのセルに入れてしまう(タップ1回で済む)。 */
+function focusCell(pid){
+  activeCell=pid;
+  if(cur.vals[pid]===undefined && curSeats().length===3){
+    cur.vals[pid]=remainScore();
+    cur.signs[pid]= cur.vals[pid]<0 ? -1 : 1;
+    autoPid=pid;                    // 以降、他を直したらここも追従する(§6-40)
+  }
+  refreshSheet(true);
+}
+/* ±ボタン: モバイルの数字キーパッドにはマイナスキーが無い端末が多く、飛び(マイナス点)を
+   入力できないため、タップで符号を切り替える。⚠️ ボタンは各入力セルの中に置くこと(§6-37)。
+   ⚠️ 値が入っていなくても押せること。空欄のまま押すと「次に入力する数字をマイナスにする」
+      モードになります。 */
+function toggleCellSign(pid){
+  pid=+pid; if(!pid) return;
+  activeCell=pid;
+  cur.signs[pid] = signOf(pid)===-1 ? 1 : -1;
+  const v=cur.vals[pid];
+  if(v!==undefined && v!==null && v!==0) cur.vals[pid]=Math.abs(v)*signOf(pid);
+  if(pid===autoPid) autoPid=null;   // 符号を手で変えた → 追従をやめる
+  syncAutoCell(pid);
+  refreshSheet(true);
+}
+
+/* 表全体を組み立て直す。列(メンバー)が変わったときだけ呼ぶこと。
+   点数の入力中は refreshSheet() で中身だけ更新する。 */
 function renderGame(){
-  const box=document.getElementById('seats');
+  const box=document.getElementById('scoreSheet');
   const gq=document.getElementById('groupQuick');
   const titleEl=document.getElementById('gameCardTitle');
-  const cancelEditBtn=document.getElementById('cancelEditGameBtn');
-  const unitHint=document.getElementById('scoreUnitHint');
+  const cancelEditBtn=document.getElementById('editActions');
   const poolBar=document.querySelector('.poolbar');
   if(S.players.length<4){
     titleEl.textContent='メンバー選択';
     if(poolBar) poolBar.style.display='none';
     if(cancelEditBtn) cancelEditBtn.style.display='none';
-    if(unitHint) unitHint.style.display='none';
     gq.innerHTML = `<div class="warn">メンバータブで4人以上登録してください。</div>`;
     box.innerHTML=''; document.getElementById('sumMsg').innerHTML='';
     const saveBtn=document.getElementById('saveGameBtn'); if(saveBtn) saveBtn.disabled=true;
     return;
   }
   if(poolBar) poolBar.style.display='';
-  /* 候補はその卓の参加メンバー(プール)に限る。5人以上いる場合、
-     半荘ごとにここから4人を選ぶ(§6-31)。
-     ⚠️ 編集中の半荘にプール外の人が入っていることがある(過去の卓・メンバー変更後)。
-        その人は候補から消さないこと。消すと編集画面で席が空になります。 */
-  let pool=poolIds();
-  // 登録メンバーがちょうど4人なら、プールは自動的にその4人(初回の手間を増やさない)
-  if(!pool.length && S.players.length===4){ setPool(S.players.map(p=>p.id)); pool=poolIds(); }
-  const inEdit=cur.seats.filter(Boolean).filter(id=>!pool.includes(id));
-  const candIds=[...pool, ...inEdit];
-  const cands=candIds.map(id=>S.players.find(p=>p.id===id)).filter(Boolean);
-  // 存在しないメンバーは選択から除去
-  cur.seats = cur.seats.map(id=> (id && cands.some(p=>p.id===id)) ? id : null);
+  justReset=false;
+  const cols=sheetCols();
+  const sess=openSession();
+  // この卓の確定済みの半荘(古い順)。gi は S.games 上の位置(編集で使う)
+  const rows = sess ? S.games.map((g,gi)=>({g,gi})).filter(x=>x.g.sid===sess.id) : [];
 
-  // プールがちょうど4人の場合は初期表示の便宜上自動で埋める(選択のやり直しは常に可能)
-  const allEmpty = cur.seats.every(s=>s===null);
-  if(allEmpty && pool.length===4 && !justReset){
-    cur.seats = pool.slice();
-  }
-  justReset = false;
-
-  const isSet = cur.seats.filter(Boolean).length===4;
-  titleEl.textContent = isSet ? (editingGame!==null?'対局結果を編集':'対局結果を入力') : 'メンバー選択';
+  titleEl.textContent = editingGame!==null ? '半荘を編集中' : '記録';
   if(cancelEditBtn) cancelEditBtn.style.display = editingGame!==null ? '' : 'none';
   const saveBtnLabel=document.getElementById('saveGameBtn');
   if(saveBtnLabel) saveBtnLabel.textContent = editingGame!==null ? '変更を保存' : '確定';
-  if(unitHint) unitHint.style.display = isSet ? 'block' : 'none';
 
-  gq.innerHTML = (!isSet && S.groups.length)
+  gq.innerHTML = (!rows.length && S.groups.length)
     ? `<label>グループから選択</label><div class="presets">`+
       S.groups.map(g=>`<button onclick="selectGroup(${g.id})">${esc(g.name)}</button>`).join('')+`</div>`
     : '';
 
-  const ai = isSet ? autoSeat() : -1;
-  box.innerHTML = cur.seats.map((pid,i)=>{
-    const isAuto=(ai===i);
-    // 持ち点は百点単位(例:250=25,000点)で入力・表示する。内部(cur.scores)は常に実点数(百の倍数)で保持する。
-    const val = (cur.scores[i]===null || cur.scores[i]===undefined) ? '' : cur.scores[i]/100;
-    const opts=['<option value="">-- 選択 --</option>'].concat(
-      cands.filter(p=> p.id===pid || !cur.seats.includes(p.id))
-        .map(p=>`<option value="${p.id}" ${p.id===pid?'selected':''}>${esc(p.name)}</option>`)
-    ).join('');
-    const seatCtl = `<select aria-label="${i+1}番目のプレイヤー" onchange="setSeat(${i}, this.value)">${opts}</select>`;
-    return `<div class="seat"><div class="srow">
-      <span class="num">${i+1}</span>
-      ${seatCtl}
-      <button type="button" class="btn small signbtn ${cur.signs[i]===-1?'on':''}" ${pid?'':'disabled'}
-        aria-label="符号を切り替え(マイナスの点数を入力)" aria-pressed="${cur.signs[i]===-1}"
-        onclick="toggleScoreSign(${i})">${cur.signs[i]===-1?'−':'±'}</button>
-      <input type="number" step="1" inputmode="numeric" class="${isAuto?'auto':''}" style="text-align:right;"
-        aria-label="${pid?esc(pname(pid)):(i+1)+'番目'} の持ち点(百点単位)" aria-describedby="scoreUnitHint"
-        placeholder="${isAuto?'自動: '+(autoScore()/100).toLocaleString():'持ち点'}"
-        value="${val}" ${pid?'':'disabled'} oninput="setScore(${i}, this.value)" onblur="finalizeScore(${i}, this.value)">
-      <span class="unit" aria-hidden="true">00</span>
-    </div></div>`;
-  }).join('');
+  // 合計(確定済みのみ)。⚠️ 打っていない半荘は 0 として数える(§6-37)
+  const tot={}; cols.forEach(id=>tot[id]=0);
+  rows.forEach(({g})=> g.seats.forEach((pid,i)=>{ if(tot[pid]!==undefined) tot[pid]+=g.pts[i]; }));
+
+  let h='<div class="tblwrap"><table class="sheet"><tr><th scope="col" class="nocol">局</th>'
+    + cols.map(id=>`<th scope="col">${esc(pname(id))}</th>`).join('') + '</tr>';
+  /* 確定済みの行。⚠️ セルそのものをボタンにして、どこを押しても編集に入れること(§6-37)。
+     上段=pt(ウマ・オカ込み) / 下段=入力した素点(百点単位)をグレーで添える。 */
+  rows.forEach(({g,gi},n)=>{
+    const editing = editingGame===g;
+    h += `<tr class="done${editing?' editing':''}"><th scope="row" class="nocol">${n+1}</th>`;
+    cols.forEach(id=>{
+      const i=g.seats.indexOf(id);
+      const pt = i<0 ? 0 : g.pts[i];
+      h += `<td class="${i<0?'out':cls(pt)}"><button type="button" class="cellbtn"
+        aria-label="${n+1}局目を編集" onclick="editGame(${gi})">${i<0?'0':fmt(pt)}</button></td>`;
+    });
+    h += '</tr>';
+  });
+  /* 入力行。⚠️ type="text" + inputmode="numeric" にすること。
+     type="number" だとブラウザのスピナー(上下ボタン)が出てしまいます(§6-37)。
+     ± は各セルの中に置く(どの人の符号か迷わないため)。 */
+  h += `<tr class="inrow"><th scope="row" class="nocol">${editingGame!==null?'編':rows.length+1}</th>`
+    + cols.map(id=>`<td><div class="cellwrap">
+        <button type="button" class="cellsign" data-sign="${id}"
+          aria-label="${esc(pname(id))} の符号を切り替え" aria-pressed="false"
+          onclick="toggleCellSign(${id})">+</button>
+        <input type="text" inputmode="numeric" data-pid="${id}"
+          aria-label="${esc(pname(id))} の持ち点(下2桁を省略)"
+          onfocus="focusCell(${id})" oninput="setCell(${id}, this.value)"
+          onblur="finalizeCell(${id}, this.value)">
+        <span class="unit00" aria-hidden="true">00</span>
+      </div></td>`).join('')
+    + '</tr>';
+  /* 確定ボタンは入力行と同じ枠の中に置く(§6-39)。
+     ⚠️ 表の外に出さないこと。「どの局を確定するのか」が分からなくなります。 */
+  /* ⚠️ 局番号の列(th)は空けて、ボタンは**メンバー列の幅ちょうど**に収めること(§6-41)。
+     colspan で局の列まで覆うと、確定ボタンだけ左にはみ出して見えます。 */
+  h += `<tr class="inrow act"><td class="nocol"></td><td colspan="${cols.length}">
+      <button class="btn main" id="saveGameBtn" onclick="saveGame()" disabled>確定</button></td></tr>`;
+  h += '<tr class="sumrow"><th scope="row" class="nocol">計</th>'
+    + cols.map(id=>`<td class="${cls(tot[id])}">${tot[id]?fmt(tot[id]):'0'}</td>`).join('')
+    + '</tr></table></div>';
+  box.innerHTML=h;
+  refreshSheet(true);
+}
+
+/* 入力行の値・±の状態・メッセージだけを更新する(DOMノードは作り直さない)。
+   force=true のときはフォーカス中の欄にも値を書き戻す(±による符号反転など)。 */
+function refreshSheet(force){
+  const box=document.getElementById('scoreSheet');
+  if(!box) return;
+  const seats=curSeats();
+  const rem = seats.length===3 ? remainScore() : null;
+  box.querySelectorAll('.inrow input').forEach(inp=>{
+    const pid=+inp.dataset.pid;
+    const v = (cur.vals[pid]===undefined || cur.vals[pid]===null) ? '' : String(cur.vals[pid]/100);
+    if((force || document.activeElement!==inp) && inp.value!==v) inp.value=v;
+    inp.classList.toggle('on', v!=='');
+    inp.classList.toggle('minus', signOf(pid)===-1);
+    inp.placeholder = (v==='' && rem!==null) ? String(rem/100) : '';
+  });
+  /* ⚠️ 既定は「＋」。タップで「−」に切り替わる(§6-39)。
+     「±」に戻さないこと。どちらの状態か分からなくなります。 */
+  box.querySelectorAll('.cellsign').forEach(b=>{
+    const pid=+b.dataset.sign, minus=signOf(pid)===-1;
+    b.classList.toggle('on', minus);
+    b.textContent = minus ? '-' : '+';
+    b.setAttribute('aria-pressed', minus?'true':'false');
+  });
   renderSumMsg();
 }
-function setSeat(i,v){
-  cur.seats[i] = v ? +v : null;
-  if(!v){ cur.scores[i]=null; cur.signs[i]=1; }
-  renderGame();
-}
+
 /* ⚠️ かつて「メンバー変更」ボタンで席を全部空にしていたが廃止した(§6-31)。
-   席は常にプルダウンで変えられるので、**直前のメンバーを残したまま**
-   変えたい席だけ選び直す。席を空にリセットする経路を新たに作らないこと。 */
+   メンバーは表の列(プール)で管理する。 */
 function selectGroup(gid){
   const g=S.groups.find(g=>g.id===gid);
   if(!g) return;
   const valid=g.members.filter(id=>S.players.some(p=>p.id===id));
   if(valid.length<4) toast('このグループのメンバーが不足しています(削除されたメンバーがいる可能性があります)','error');
-  addToPool(valid);                       // グループ選択は参加メンバーにも反映する
-  cur = resetCur([0,1,2,3].map(i=> valid[i] ?? null));
-  justReset = true;
+  addToPool(valid);
+  cur = resetCur();
   renderGame();
 }
+
 /* この卓のメンバーを決めるダイアログ(§6-31)。
    参加メンバーは画面に常時出さず、ここでだけ確認・変更する。
    ⚠️ すべてのダイアログは共通の DOM を使うので、必ず resetModal() から始めること。
@@ -1772,7 +1995,7 @@ function openPoolPicker(){
       return `<button type="button" data-id="${p.id}" class="${on?'sel':''}" aria-pressed="${on}"
         ${lock?'disabled title="この卓で既に対局しているため外せません"':''}>${esc(p.name)}</button>`;
     }).join('')+
-    `</div><div class="hint mt">5人以上でも同じ卓のまま。半荘ごとに席のプルダウンで4人を選びます。</div>`;
+    `</div><div class="hint mt">5人以上でも同じ卓のまま。半荘ごとに、表の入力行で4人分だけ点数を入れます。</div>`;
   const okBtn=document.getElementById('modalOk');
   const cancelBtn=document.getElementById('modalCancel');
   okBtn.textContent='決定';
@@ -1785,143 +2008,45 @@ function openPoolPicker(){
   });
   okBtn.onclick=()=>{
     setPool([...picked]);
-    // 外れた人が席に残らないようにする(点数も消す)
+    // 外れた人の入力値は捨てる(列が消えるため)
     const now=poolIds();
-    cur.seats = cur.seats.map((id,i)=>{
-      if(id && !now.includes(id)){ cur.scores[i]=null; cur.signs[i]=1; return null; }
-      return id;
+    Object.keys(cur.vals).map(Number).forEach(id=>{
+      if(!now.includes(id)){ delete cur.vals[id]; delete cur.signs[id]; }
     });
     closeModal(); renderGame();
   };
   cancelBtn.onclick=()=>closeModal();
   openModal();
 }
-// 持ち点は百点単位で入力する(例:250 → 25,000点)。内部(cur.scores)は常に実点数で保持する。
-// リアルタイム入力(oninput): キーボード入力を妨げないよう、DOM再生成(renderGame)は行わず、
-// 入力値(百点単位)を実点数に変換して保持し、合計点数の表示とボタンのdisabled状態だけを更新する。
-// 入力値と符号モードを合成する。
-// 欄に直接マイナスを打った場合(PCなど)は、符号モードの方を入力に合わせて同期する。
-function applySign(i, v){
-  if(v==='' || v==='-' || v==='−') return null;
-  const n=+v;
-  if(!isFinite(n)) return null;
-  if(n<0) cur.signs[i]=-1;          // 直接マイナスを打った → 符号モードを合わせる
-  else if(n>0 && /^[+]?\d/.test(String(v).trim()) && String(v).trim()[0]!=='-'){
-    // 正の数が打たれただけでは符号モードは変えない(±で指定した意図を尊重する)
-  }
-  return Math.abs(n)*cur.signs[i];
-}
-function setScore(i,v){
-  const n=applySign(i,v);
-  cur.scores[i] = n===null ? null : n*100;
-  refreshSignBtn(i);
-  renderSumMsg();
-}
-// フォーカスアウト時(onblur): このタイミングで初めて百点単位の整数に丸め、表示を更新する。
-//
-// ⚠️ ここで renderGame() を呼んではいけない。
-//    renderGame() は #seats の innerHTML を丸ごと差し替えるため、
-//    「点数入力欄にフォーカスがある状態で ± ボタンや席の <select> をタップする」と
-//      ① タップ(pointerdown) → ② 入力欄が blur → ③ #seats が差し替わり、
-//         タップされたボタン/セレクトが DOM から消える
-//      ④ pointerup が別要素に着地するため click が発火しない
-//    となり、1回目のタップが黙って無視される(2回目でようやく効く)。
-//    そのため blur 後の更新は、ノードを作り直さない refreshScoreUI() で行う。
-function finalizeScore(i,v){
-  const n=applySign(i,v);
-  cur.scores[i] = n===null ? null : Math.round(n)*100;
-  refreshScoreUI();
-}
-// 点数まわりの表示だけを、DOMノードを作り直さずに更新する。
-// (席の顔ぶれは変わらないので、select の options を作り直す必要はない)
-// force=true のときは、フォーカス中の欄も含めて値を書き戻す(±ボタンによる符号反転など、
-// 入力欄の外からの操作で値が変わったとき用)。
-function refreshScoreUI(force){
-  const box=document.getElementById('seats');
-  if(!box) return;
-  const isSet = cur.seats.filter(Boolean).length===4;
-  const ai = isSet ? autoSeat() : -1;
-  const auto = ai>=0 ? autoScore() : 0;
-  box.querySelectorAll('.seat').forEach((el,i)=>{
-    const inp=el.querySelector('input[type="number"]');
-    if(!inp) return;
-    const isAuto=(ai===i);
-    inp.classList.toggle('auto', isAuto);
-    inp.placeholder = isAuto ? '自動: '+(auto/100).toLocaleString() : '持ち点';
-    const v = (cur.scores[i]===null || cur.scores[i]===undefined) ? '' : String(cur.scores[i]/100);
-    // 入力中の欄は原則書き換えない(キャレット位置が先頭に飛ぶため)
-    if((force || document.activeElement!==inp) && inp.value!==v) inp.value=v;
-    refreshSignBtn(i);
-  });
-  renderSumMsg();
-}
-/* ±ボタン: モバイルの数字キーパッド(inputmode=numeric)にはマイナスキーが無い端末が多く、
-   飛び(マイナス点)を入力できないため、タップで符号を切り替える。
-   ⚠️ 値が入っていなくても押せること。空欄のまま押すと「次に入力する数字をマイナスにする」
-      モードになり、ボタンが押下状態(−)で表示される。
-      以前は `scores[i]` が null/0 のとき早期 return していたため、先に押しても何も起きなかった。 */
-function toggleScoreSign(i){
-  if(!cur.seats[i]) return;
-  cur.signs[i] = cur.signs[i]===-1 ? 1 : -1;
-  if(cur.scores[i]!==null && cur.scores[i]!==undefined && cur.scores[i]!==0){
-    cur.scores[i] = Math.abs(cur.scores[i]) * cur.signs[i];
-  }
-  refreshScoreUI(true); // renderGame() だと連続タップ時に自分自身が DOM から消える
-}
-// ±ボタンの見た目(押下状態・ラベル)を現在の符号モードに合わせる
-function refreshSignBtn(i){
-  const box=document.getElementById('seats');
-  if(!box) return;
-  const seat=box.querySelectorAll('.seat')[i];
-  const btn=seat && seat.querySelector('.signbtn');
-  if(!btn) return;
-  const minus=cur.signs[i]===-1;
-  btn.classList.toggle('on', minus);
-  btn.setAttribute('aria-pressed', minus?'true':'false');
-  btn.textContent = minus ? '−' : '±';
-}
-// 未入力がちょうど1つならその席を自動計算
-function autoSeat(){
-  const empty = cur.scores.map((s,i)=>s===null?i:-1).filter(i=>i>=0);
-  return empty.length===1 ? empty[0] : -1;
-}
-function autoScore(){
-  const sum = cur.scores.reduce((a,b)=>a+(b||0),0);
-  return totalScore() - sum;
-}
-function effScores(){
-  const a=[...cur.scores]; const ai=autoSeat();
-  if(ai>=0) a[ai]=autoScore();
-  return a;
-}
 function renderSumMsg(){
   const el=document.getElementById('sumMsg');
   const btn=document.getElementById('saveGameBtn');
-  if(cur.seats.filter(Boolean).length<4){
-    el.innerHTML=`<div class="hint">4人を選択してください</div>`;
+  const seats=curSeats();
+  // ⚠️ 入力の途中は何も出さないこと(「あと◯人」は邪魔なので廃止・§6-39)
+  if(seats.length<4){
+    el.innerHTML='';
     if(btn) btn.disabled=true;
     return;
   }
-  const filled = cur.scores.filter(s=>s!==null).length;
-  if(filled<3){
-    el.innerHTML=`<div class="hint">あと${3-filled}人</div>`;
+  if(seats.length>4){
+    el.innerHTML=`<div class="warn">${seats.length}人分入っています(4人になるよう消してください)</div>`;
     if(btn) btn.disabled=true;
     return;
   }
-  const sc=effScores();
-  const sum=sc.reduce((a,b)=>a+b,0);
   const need=totalScore();   // 配給原点×4人。オカ設定で変わる(§6-30)
+  const sum=curScores().reduce((a,b)=>a+b,0);
   const valid = sum===need;
   el.innerHTML = valid ? `<div class="ok">✓ 合計 ${need.toLocaleString()}点</div>`
     : `<div class="warn">合計が ${sum.toLocaleString()}点 です(${need.toLocaleString()}点になるよう確認)</div>`;
-  // 4人選択済み・合計がちょうど配給原点×4の場合のみ確定ボタンを有効化(誤操作・計算ミスの防止)
+  // 4人ちょうど・合計が配給原点×4の場合のみ確定ボタンを有効化(誤操作・計算ミスの防止)
   if(btn) btn.disabled = !valid;
 }
+
 /* 同点があれば、どちらを上位にするかをユーザーに選ばせて着順(idx[rank]=seat)を返す。
    同点がなければ undefined(= calcPts の既定ルールに任せる)。キャンセルされたら null。
    ⚠️ 戻り値の null と undefined は意味が違う。null は「保存をやめる」合図。
    3人以上の同点では、上位から1人ずつ順に選ばせる。 */
-async function resolveTieOrder(scores){
+async function resolveTieOrder(scores, seatIds){
   const groups=tieGroups(scores);
   if(!groups.length) return undefined;
   const order=defaultRankOrder(scores);
@@ -1936,9 +2061,9 @@ async function resolveTieOrder(scores){
       // 3人以上同点のときだけ、何位を決めているのかを添える。
       const nth=slots[decided.length]+1;
       const msg = rest.length===2 && group.length===2
-        ? `${pname(cur.seats[rest[0]])} と ${pname(cur.seats[rest[1]])} が ${pts}点で同点です。\nどちらが上位ですか?`
+        ? `${pname(seatIds[rest[0]])} と ${pname(seatIds[rest[1]])} が ${pts}点で同点です。\nどちらが上位ですか?`
         : `${pts}点で ${group.length}人が同点です。\n${nth}位はどなたですか?`;
-      const pick=await chooseDialog(msg, rest.map(seat=>({label:pname(cur.seats[seat]), value:seat})));
+      const pick=await chooseDialog(msg, rest.map(seat=>({label:pname(seatIds[seat]), value:seat})));
       if(pick===null) return null; // キャンセル → 保存しない
       decided.push(pick);
       rest=rest.filter(s=>s!==pick);
@@ -1958,17 +2083,16 @@ async function saveGame(){
   try{ await saveGameInner(); } finally { saving = false; }
 }
 async function saveGameInner(){
-  if(cur.seats.some(s=>s===null)){ toast('4人全員を選択してください','error'); return; }
-  if(new Set(cur.seats).size<4){ toast('同じメンバーが重複しています','error'); return; }
-  const filled = cur.scores.filter(s=>s!==null).length;
-  if(filled<3){ toast('3人以上の点数を入力してください','error'); return; }
-  const sc=effScores();
+  /* 参加者は「表に点数が入っている人」。列順がそのまま席順になる(§6-36)。 */
+  const seatIds=curSeats();
+  if(seatIds.length!==4){ toast('4人分の点数を入力してください','error'); return; }
+  const sc=curScores();
   const need=totalScore();
   if(sc.reduce((a,b)=>a+b,0)!==need){ toast(`合計が${need.toLocaleString()}点になっていません`,'error'); return; }
   const tobi=[]; sc.forEach((s,i)=>{ if(s<0) tobi.push({loser:i}); });
 
   // 同点があれば、どちらを上位にするかをここで決める(キャンセルされたら保存しない)
-  const order = await resolveTieOrder(sc);
+  const order = await resolveTieOrder(sc, seatIds);
   if(order===null) return;
 
   if(editingGame!==null){
@@ -1982,13 +2106,15 @@ async function saveGameInner(){
     if(idx<0){ editingGame=null; toast('編集対象の半荘が見つかりませんでした(削除された可能性があります)','error'); renderGame(); return; }
     const cond=settingsFor(editingGame);
     const e=calcPts(sc, cond, order);
-    S.games[idx] = {...editingGame, seats:[...cur.seats], scores:sc, pts:e.pts, ranks:e.ranks, tobi,
+    S.games[idx] = {...editingGame, seats:[...seatIds], scores:sc, pts:e.pts, ranks:e.ranks, tobi,
       rate:cond.rate, uma1:cond.uma1, uma2:cond.uma2, start:startOf(cond), ret:retOf(cond)};
     editingGame=null;
     save();
-    cur = resetCur();
-    justReset = true;
-    renderGame(); renderHistory();
+    /* ⚠️ 入力行は空に戻すが、メンバーは表の列(プール)として残るので消えない。
+       旧UIではここで席まで空にしていたため「編集して保存したらメンバー名が消えた」
+       という不具合になっていた(§6-36)。 */
+    cur = resetCur(); activeCell=null; autoPid=null;
+    renderGame();
     toast('半荘の結果を更新しました', 'ok');
     return;
   }
@@ -2000,15 +2126,15 @@ async function saveGameInner(){
   const n=calcPts(sc, null, order);
   const sess=ensureSession();
   // 打った4人は必ず参加メンバーに含める(席の select から直接選ばれた場合の取りこぼし防止・§6-31)
-  sess.pool=[...new Set([...(Array.isArray(sess.pool)?sess.pool:[]), ...cur.seats])].filter(Boolean);
-  const saved={sid:sess.id, t:now, seats:[...cur.seats], scores:sc, pts:n.pts, ranks:n.ranks,
+  sess.pool=[...new Set([...(Array.isArray(sess.pool)?sess.pool:[]), ...seatIds])].filter(Boolean);
+  const saved={sid:sess.id, t:now, seats:[...seatIds], scores:sc, pts:n.pts, ranks:n.ranks,
     tobi, rate:S.settings.rate, uma1:S.settings.uma1, uma2:S.settings.uma2,
     start:startOf(), ret:retOf()};
   S.games.push(saved);
   settleSid=sess.id;
   save();
-  cur = resetCur([...cur.seats]);
-  renderGame(); renderHistory();
+  cur = resetCur(); activeCell=null; autoPid=null;
+  renderGame();
   // 確定した半荘の結果をその場で見せる(その卓で何局目かを添える)
   await showGameResult(saved, sessionGames(sess.id).length);
 }
@@ -2017,129 +2143,105 @@ function editGame(gi){
   const g=S.games[gi];
   if(!g) return;
   editingGame = g;
-  cur = resetCur([...g.seats]);
-  cur.scores = [...g.scores];
-  // 読み込んだ点数がマイナスなら、±ボタンの状態もそれに合わせる
-  cur.signs = g.scores.map(s=> s<0 ? -1 : 1);
-  justReset = true;
+  cur = resetCur();
+  // 表の入力行へ読み込む。マイナスの点数は符号モードも合わせる
+  g.seats.forEach((pid,i)=>{ cur.vals[pid]=g.scores[i]; cur.signs[pid]= g.scores[i]<0 ? -1 : 1; });
+  activeCell=null; autoPid=null;
   showTab('game');
   toast('半荘を編集中です。保存すると内容が上書きされます');
 }
 function cancelEditGame(){
   editingGame = null;
-  cur = resetCur();
-  justReset = true;
+  cur = resetCur(); activeCell=null; autoPid=null;
   renderGame();
 }
 
 /* 1半荘のリザルト表。履歴のアコーディオンと、確定直後のモーダルの両方で使う。
    ⚠️ 片方だけ書き換えると表示がずれるので、必ずこの関数を直すこと。 */
+/* 1半荘のリザルト表。⚠️ 収支(円)は出さないこと(§6-38)。
+   その場で知りたいのは順位と pt で、金額は精算タブの仕事です。 */
 function gameResultTable(g){
   const order=[0,1,2,3].sort((a,b)=>g.ranks[a]-g.ranks[b]);
   const rows=order.map(i=>{
-    const money=Math.round(g.pts[i]*g.rate*10);
     const tobi=(g.tobi||[]).some(t=>t.loser===i) ? '<span class="badge">トビ</span>' : '';
     const top=g.ranks[i]===0;
-    return `<tr class="${top?'rank1':''}"><td>${top?CROWN:''}${g.ranks[i]+1}位${tobi}</td><td>${esc(pname(g.seats[i]))}</td>
-      <td>${g.scores[i].toLocaleString()}</td><td class="${cls(g.pts[i])}">${fmt(g.pts[i])}</td>
-      <td class="${cls(money)}">${yen(money)}</td></tr>`;
+    /* ⚠️ ここで CROWN を使わないこと。CROWN には読み上げ用の「1位」が入っており、
+       隣の「1位」と二重に読まれます。 */
+    return `<tr class="${top?'rank1':''}"><td>${g.ranks[i]+1}位${tobi}</td><td>${esc(pname(g.seats[i]))}</td>
+      <td>${g.scores[i].toLocaleString()}</td><td class="${cls(g.pts[i])}">${fmt(g.pts[i])}</td></tr>`;
   }).join('');
-  return `<table><tr><th scope="col">順位</th><th scope="col">名前</th><th scope="col">点数</th><th scope="col">pt</th><th scope="col">収支</th></tr>${rows}</table>`;
+  return `<table><tr><th scope="col">順位</th><th scope="col">名前</th><th scope="col">点数</th><th scope="col">pt</th></tr>${rows}</table>`;
 }
-// 半荘を確定した直後に、その局の結果をモーダルで見せる
+/* 半荘を確定した直後のリザルト。
+   「確定」で閉じ、「修正」を押すとその半荘をそのまま編集に戻す(§6-38)。
+   ⚠️ すべてのダイアログは共通の DOM を使うので、必ず resetModal() から始めること。 */
 function showGameResult(g, nth){
-  return alertDialog(`${nth}局目の結果`, gameResultTable(g)
-    );
+  return new Promise(resolve=>{
+    resetModal();
+    document.getElementById('modalMsg').textContent = `${nth}局目の結果`;
+    document.getElementById('modalBody').innerHTML = gameResultTable(g)
+      + `<div class="center mt"><button type="button" class="btn small" id="resultFixBtn">修正する</button></div>`;
+    const okBtn=document.getElementById('modalOk');
+    const cancelBtn=document.getElementById('modalCancel');
+    cancelBtn.style.display='none';
+    okBtn.textContent='確定';
+    openModal();
+    function cleanup(fix){
+      okBtn.onclick=null;
+      document.removeEventListener('keydown', onKey);
+      closeModal();
+      if(fix){
+        const gi=S.games.indexOf(g);
+        if(gi>=0) editGame(gi);
+      }
+      resolve();
+    }
+    function onKey(e){ if(e.key==='Escape') cleanup(false); }
+    okBtn.onclick=()=>cleanup(false);
+    const fixBtn=document.getElementById('resultFixBtn');
+    if(fixBtn) fixBtn.onclick=()=>cleanup(true);
+    document.addEventListener('keydown', onKey);
+    setTimeout(()=>okBtn.focus(), 0);
+  });
 }
 
-/* ---------- 履歴(卓ごと) ----------
-   ⚠️ 日付ではなく g.sid でグルーピングすること。日付をまたいでも集計は分かれない。 */
-function renderHistory(){
-  const el=document.getElementById('historyList');
-  if(!S.games.length){
-    el.innerHTML='<div class="card center hint">まだ対局がありません</div>';
-    return;
-  }
-  const bySid={};
-  S.games.forEach((g,gi)=>{ (bySid[g.sid]=bySid[g.sid]||[]).push({g,gi}); });
-  const sids=S.sessions.filter(s=>bySid[s.id]).sort((a,b)=>b.t-a.t);
-  el.innerHTML = sids.map(sess=>{
-    const d=sessionLabel(sess);
-    const list=bySid[sess.id];
-    const open=!sess.closedAt;
-    // --- 卓の合計(対局点数のみ) ---
-    const agg={};
-    list.forEach(({g})=> g.seats.forEach((pid,i)=>{
-      const a=agg[pid]=agg[pid]||{pt:0,money:0,n:0};
-      a.pt+=g.pts[i]; a.money+=Math.round(g.pts[i]*g.rate*10); a.n++;
-    }));
-    const totRows=Object.entries(agg)
-      .map(([pid,a])=>({pid:+pid, ...a}))
-      .sort((a,b)=>b.money-a.money)
-      .map((a,idx)=>`<tr class="${idx===0?'rank1':''}"><td>${idx===0?CROWN:''}${esc(pname(a.pid))}</td><td>${a.n}</td>
-        <td class="${cls(a.pt)}">${fmt(a.pt)}</td>
-        <td class="${cls(a.money)}">${yen(a.money)}</td></tr>`).join('');
-    // --- 各半荘(アコーディオン・古い順にナンバリング) ---
-    const gamesHtml=list.map(({g,gi},k)=>{
-      // 見出しは局数だけ。中身は開けば分かるので、時刻やトップ名は出さない
-      return `<details class="acc">
-        <summary><span><span class="roundno">${k+1}</span>局</span></summary>
-        <div class="accbody">
-          ${gameResultTable(g)}
-          <div class="row mt">
-            <button class="btn small" onclick="editGame(${gi})">編集</button>
-            <button class="btn small danger" onclick="delGame(${gi})">削除</button>
-          </div>
-        </div>
-      </details>`;
-    }).reverse().join('');
-    // 進行中はバッジを出さない(「集計」ボタンがあること自体が進行中の印)
-    const badge = open ? '' : '<span class="badge">集計済み</span>';
-    const action = open
-      ? `<button class="btn small main" onclick="closeSession()">集計</button>`
-      : `<button class="btn small" onclick="reopenSession(${sess.id})">再開</button>`;
-    // 卓(合計カード) が親、各半荘がその中の子。.session でひとまとまりにする
-    return `<div class="session">
-      <div class="card summary">
-        <div class="gtitle">
-          <span style="font-size:16px; font-weight:700;">${d} ${badge}</span>
-          ${action}
-        </div>
-        <h2 class="mt">卓の合計(${list.length}局)</h2>
-        <table><tr><th scope="col">名前</th><th scope="col">局数</th><th scope="col">pt</th><th scope="col">収支</th></tr>${totRows}</table>
-      </div>
-      <div class="games">${gamesHtml}</div>
-    </div>`;
-  }).join('');
+/* ---------- 半荘の削除 ----------
+   ⚠️ 履歴カードは廃止した(§6-37)。半荘を消す導線は「編集中の削除ボタン」だけ。 */
+async function delEditingGame(){
+  const g=editingGame;
+  if(!g){ toast('編集中の半荘がありません','error'); return; }
+  const gi=S.games.indexOf(g);
+  if(gi<0){ editingGame=null; renderGame(); return; }
+  editingGame=null;
+  await delGame(gi);
+  cur=resetCur(); activeCell=null; autoPid=null;
+  renderGame(); renderTotal();
 }
-
 async function delGame(gi){
   if(!(await confirmDialog('この半荘を削除しますか?', {danger:true, okText:'削除'}))) return;
   const removed=S.games[gi];
-  S.games.splice(gi,1); save();
-  renderHistory();
+  S.games.splice(gi,1); save(); renderGame();
   toast('半荘を削除しました', null, {label:'元に戻す', onClick:()=>{
-    S.games.splice(gi,0,removed); save(); renderHistory();
+    S.games.splice(gi,0,removed); save(); renderGame();
   }});
 }
 
 /* ---------- 場代・飲食(日付キーで管理し、その日の実参加者のみに割り振る) ---------- */
 // 読み取り専用。S.expenses を書き換えないこと(画面を開いただけで空の日付エントリが
 // 生まれて保存され、S.expenses が使っていない日で膨らむのを防ぐため)。
-const EMPTY_EXPENSE = Object.freeze({venue:0, personal:Object.freeze({}), splitAll:false});
+const EMPTY_EXPENSE = Object.freeze({venue:0});
 function peekExpenses(sid){ return S.expenses[sid] || EMPTY_EXPENSE; }
-// 書き込み用。setVenue / setPersonal / setSplitAll からのみ呼ぶこと。
+// 書き込み用。setVenue からのみ呼ぶこと。
 function expensesOf(sid){
-  if(!S.expenses[sid]) S.expenses[sid]={venue:0, personal:{}, splitAll:false};
+  if(!S.expenses[sid]) S.expenses[sid]={venue:0};
   return S.expenses[sid];
 }
 // 入力が全部ゼロに戻された卓のエントリは削除する(既存の空エントリの掃除も兼ねる)
 function pruneExpenses(sid){
   const ex=S.expenses[sid];
-  if(!ex) return;
-  const hasPersonal=Object.values(ex.personal||{}).some(p=>(p&&(p.food||p.drink)));
-  if(!(ex.venue||0) && !hasPersonal) delete S.expenses[sid];
+  if(ex && !(ex.venue||0)) delete S.expenses[sid];
 }
+
 /* 金額を人数で等分する。
    1人あたりを SPLIT_UNIT(100円)単位に切り上げた額(base)を他の人の負担とし、
    調整役(adjustPid)が残りを引き受ける。
@@ -2175,119 +2277,61 @@ function splitAdjuster(sid, pids){
   }));
   return pids.reduce((lo,id)=> money[id] <= money[lo] ? id : lo, pids[0]);
 }
-// その卓の飲食の総額(個人入力の合計)
-function personalTotal(sid){
-  const per=peekExpenses(sid).personal||{};
-  return Object.values(per).reduce((a,p)=>a+((p&&p.food)||0)+((p&&p.drink)||0), 0);
-}
-function venueShareMap(sid){ // {pid: 場代負担額}(完全割り勘モードでは飲食も含めた総額の等分)
+/* その卓の場代の総額。⚠️ 飲食・その他の個別入力は廃止した(§6-36)。
+   古いデータは normalize で venue に合算済みなので、ここは venue だけを見ること。 */
+function venueTotal(sid){ return peekExpenses(sid).venue||0; }
+/* {pid: 負担額}。**完全割り勘のみ**。
+   誰が何を頼んだかは問わず、総額を参加者で等分する。 */
+function venueShareMap(sid){
   const pids=dayParticipants(sid);
-  const ex=peekExpenses(sid);
   if(!pids.length) return {};
-  if(ex.splitAll){
-    // 完全割り勘: 場代+飲食の総額を全員で等分する(誰が何を頼んだかは問わない)
-    return splitEvenly((ex.venue||0)+personalTotal(sid), pids, splitAdjuster(sid, pids));
-  }
-  const v=ex.venue||0;
+  const v=venueTotal(sid);
   if(!v) return {};
-  const base=Math.floor(v/pids.length), rem=v-base*pids.length;
-  const out={};
-  pids.forEach((id,i)=> out[id]=base+(i<rem?1:0));
-  return out;
+  return splitEvenly(v, pids, splitAdjuster(sid, pids));
 }
-function personalOf(sid,pid){
-  const p=(peekExpenses(sid).personal||{})[pid]||{};
-  return {food:p.food||0, drink:p.drink||0};
-}
-// ⚠️ 完全割り勘モードでは、飲食は既に venueShareMap 側で総額に含めて等分済み。
-//    ここで個人の実費を足すと二重計上になるので、shares だけを返すこと。
-function costOf(sid,pid, shares){
-  if(peekExpenses(sid).splitAll) return (shares[pid]||0);
-  const per=personalOf(sid,pid);
-  return (shares[pid]||0)+per.food+per.drink;
-}
-function setPersonal(d,pid,k,v){
-  const ex=expensesOf(d);
-  const p=ex.personal[pid]=ex.personal[pid]||{food:0,drink:0};
-  p[k]=Math.round(+v)||0;
-  pruneExpenses(d);
-  save(); renderTotal();
-}
+// 1人あたりの負担。割り勘しかないので shares をそのまま返す
+function costOf(sid,pid, shares){ return (shares[pid]||0); }
 function setVenue(d,v){
   expensesOf(d).venue = Math.round(+v)||0;
   pruneExpenses(d);
   save(); renderTotal();
 }
-// 完全割り勘モードの切り替え。true なら「場代+飲食の総額」を人数で等分する。
-function setSplitAll(d,on){
-  expensesOf(d).splitAll = !!on;
-  pruneExpenses(d);
-  save(); renderTotal();
-}
-async function clearExpenses(){
-  const d=settleSid;
-  if(!d){ toast('上で卓を選んでからクリアしてください','error'); return; }
-  if(!(await confirmDialog(`${sessionLabel(sessionById(d))} の場代・飲食の入力をクリアします。よろしいですか?`, {danger:true, okText:'クリア'}))) return;
-  const removed=S.expenses[d];
-  if(!removed){ toast('この卓の入力はありません'); return; }
-  delete S.expenses[d];
-  save(); renderTotal();
-  toast('場代・飲食をクリアしました', null, {label:'元に戻す', onClick:()=>{
-    S.expenses[d]=removed; save(); renderTotal();
-  }});
+/* 場代カード。対局の精算とは**完全に別建て**にする(§6-36)。
+   ⚠️ ここに飲食の個別入力を戻さないこと。割り勘だけにすると決めた画面です。 */
+/* 場代の入力を確定する(§6-43)。
+   ⚠️ onchange とは別にこの経路が要る。入力欄を触ったまま確定を押しても
+      値が拾えるよう、ここでも欄の現在値を読むこと。 */
+function commitVenue(d){
+  const inp=document.getElementById('venueInput');
+  setVenue(d, inp ? inp.value : '');
+  toast('場代を確定しました','ok');
 }
 function renderExpenses(){
-  const el=document.getElementById('expenseArea');
-  if(!S.players.length){ el.innerHTML='<div class="hint">メンバーを登録すると使えます</div>'; return; }
+  const el=document.getElementById('venueArea');
+  if(!el) return;
   const d=settleSid;
-  if(!d){
-    el.innerHTML='<div class="hint">卓を選ぶと入力できます</div>';
-    return;
-  }
+  if(!d){ el.innerHTML='<div class="hint">卓を選ぶと入力できます</div>'; return; }
   const pids=dayParticipants(d);
-  if(!pids.length){
-    el.innerHTML='<div class="hint">参加者が未確定です</div>';
-    return;
-  }
-  const ex=peekExpenses(d);
+  const v=venueTotal(d);
+  /* ⚠️ ラベルは置かない(カード見出しの「場代」で足りる・§6-43)。
+     ⚠️ ただし見える<label>が無いぶん aria-label は必須。消すと無名の入力欄になります。
+     ⚠️ 入力欄の横に確定ボタンを置くこと。onchange だけだと
+        「打ったのに反映されたか分からない」という迷いが残ります。 */
+  const head=`<div class="venuerow">
+      <input type="text" id="venueInput" inputmode="numeric" placeholder="例:6000"
+        aria-label="場代の総額(円)"
+        value="${v||''}" onchange="setVenue('${d}', this.value)">
+      <button type="button" class="btn small main" onclick="commitVenue('${d}')">確定</button>
+    </div>`;
+  if(!pids.length){ el.innerHTML=head+'<div class="hint mt">参加者が未確定です</div>'; return; }
+  if(!v){ el.innerHTML=head+`<div class="hint mt">総額を入れると ${pids.length}人で等分します</div>`; return; }
   const shares=venueShareMap(d);
-  const v=ex.venue||0;
-  const split=!!ex.splitAll;
-  const grand=v+personalTotal(d);
-  const head=`<label>場代(合計・円)</label>
-    <input type="number" step="100" inputmode="numeric" placeholder="例:6000" value="${v||''}" onchange="setVenue('${d}', this.value)">
-    <label class="mt" style="display:flex; align-items:center; gap:8px; min-height:44px; cursor:pointer;">
-      <input type="checkbox" ${split?'checked':''} onchange="setSplitAll('${d}', this.checked)">
-      <span>完全割り勘にする(場代+飲食の総額を人数で等分)</span>
-    </label>`;
-  if(split){
-    // 完全割り勘: 誰が何を頼んだかは負担額に影響しないので、個人入力は「総額を出すための内訳」になる
-    return void (el.innerHTML = head +
-      `<table class="mt"><tr><th scope="col">名前</th><th scope="col">食事</th><th scope="col">ドリンク</th><th scope="col">負担額</th></tr>`+
-      pids.map(pid=>{
-        const per=personalOf(d,pid);
-        return `<tr><td>${esc(pname(pid))}</td>
-          <td><input type="number" step="10" inputmode="numeric" style="width:72px; padding:5px; text-align:right;" placeholder="0"
-            value="${per.food||''}" onchange="setPersonal('${d}',${pid},'food',this.value)"></td>
-          <td><input type="number" step="10" inputmode="numeric" style="width:72px; padding:5px; text-align:right;" placeholder="0"
-            value="${per.drink||''}" onchange="setPersonal('${d}',${pid},'drink',this.value)"></td>
-          <td>${(shares[pid]||0).toLocaleString()}円</td></tr>`;
-      }).join('')+
-      `<tr><th scope="row">総額</th><td colspan="2"></td><td><b>${grand.toLocaleString()}円</b></td></tr></table>
-      <div class="hint">${SPLIT_UNIT}円単位。端数は最下位の ${esc(pname(splitAdjuster(d,pids)))} が調整</div>`);
-  }
   el.innerHTML = head +
-    `<table class="mt"><tr><th scope="col">名前</th><th scope="col">場代</th><th scope="col">食事</th><th scope="col">ドリンク</th><th scope="col">合計</th></tr>`+
-    pids.map(pid=>{
-      const per=personalOf(d,pid); const c=costOf(d,pid,shares);
-      return `<tr><td>${esc(pname(pid))}</td><td>${(shares[pid]||0).toLocaleString()}</td>
-        <td><input type="number" step="10" inputmode="numeric" style="width:72px; padding:5px; text-align:right;" placeholder="0"
-          value="${per.food||''}" onchange="setPersonal('${d}',${pid},'food',this.value)"></td>
-        <td><input type="number" step="10" inputmode="numeric" style="width:72px; padding:5px; text-align:right;" placeholder="0"
-          value="${per.drink||''}" onchange="setPersonal('${d}',${pid},'drink',this.value)"></td>
-        <td>${c.toLocaleString()}円</td></tr>`;
-    }).join('')+`</table>
-`;
+    `<table class="mt"><tr><th scope="col">名前</th><th scope="col">1人あたり</th></tr>`+
+    pids.map(pid=>`<tr><td>${esc(pname(pid))}</td>
+      <td class="bigmoney">${(shares[pid]||0).toLocaleString()}円</td></tr>`).join('')+
+    `<tr><th scope="row">総額</th><td><b>${v.toLocaleString()}円</b></td></tr></table>
+     <div class="hint">端数は最下位の ${esc(pname(splitAdjuster(d,pids)))} が調整</div>`;
 }
 
 /* ---------- セッション(卓) ----------
@@ -2355,17 +2399,17 @@ async function closeSession(){
   if(!s){ toast('確定できる進行中の卓がありません','error'); return; }
   const n=sessionGames(s.id).length;
   if(!n){ toast('半荘が1局も記録されていません','error'); return; }
-  if(!(await confirmDialog(`${sessionLabel(s)} を集計します(全${n}局)。\n集計すると、次の半荘から新しい卓として記録されます。`, {okText:'集計'}))) return;
+  if(!(await confirmDialog(`${sessionLabel(s)} の精算を確定します(全${n}局)。\n確定すると記録に残り、次の半荘から新しい卓として始まります。`, {okText:'確定'}))) return;
   s.closedAt=Date.now();
   settleSid=s.id; // 精算タブは集計した卓を表示する
   /* 次の卓は「同じ面子の続き」であることが多いので、参加メンバーと席をそのまま引き継ぐ。
      ⚠️ ここを空にしないこと。プルダウンが全部ブランクになり、毎回4人を選び直すことになります(§6-31)。
         面子が変わるときは、変えたい席のプルダウンだけ選び直せば済みます。 */
   pendingPool=(Array.isArray(s.pool)&&s.pool.length ? s.pool : seatsUsedIn(s.id)).slice();
-  cur=resetCur([...cur.seats]);   // 席は残して点数だけクリア
-  save(); renderGame(); renderHistory(); renderTotal();
-  toast('集計しました', 'ok', {label:'取り消す', onClick:()=>{
-    s.closedAt=null; save(); renderGame(); renderHistory(); renderTotal();
+  cur=resetCur(); activeCell=null; autoPid=null;
+  save(); renderGame(); renderTotal();
+  toast('精算を確定しました', 'ok', {label:'取り消す', onClick:()=>{
+    s.closedAt=null; save(); renderGame(); renderTotal();
   }});
 }
 // 確定済みの卓を開き直す。あとから半荘やチップを足したいとき用。
@@ -2380,7 +2424,7 @@ async function reopenSession(sid){
   }
   s.closedAt=null;
   settleSid=s.id;
-  save(); renderGame(); renderHistory(); renderTotal();
+  save(); renderGame(); renderTotal();
   toast(`${sessionLabel(s)} を再開しました`, 'ok');
 }
 
@@ -2413,54 +2457,32 @@ function dayParticipants(sid){
   // (1局も保存する前に場代を入力できるようにするための、意図的で限定的なフォールバック)
   const s=sessionById(sid);
   if(!set.size && s && !s.closedAt){
-    const seated=cur.seats.filter(id=>id && S.players.some(p=>p.id===id));
+    const seated=curSeats();
     if(seated.length===4) seated.forEach(id=>set.add(id));
   }
   return [...set].filter(pid=>S.players.some(p=>p.id===pid));
 }
-function renderChipSettle(){
-  const el=document.getElementById('chipSettle');
-  if(!S.players.length){ el.innerHTML='<div class="hint">メンバー登録後に使えます</div>'; return; }
+/* チップの編集中 pid(§6-42)。表のセルを入力に切り替えるのに使う。
+   ⚠️ 再描画のたびにクリアしないこと。 */
+let chipEditPid = null;
+function editChip(pid){ chipEditPid=+pid; renderTotal();
+  setTimeout(()=>{ const i=document.querySelector(`#settleTable input[data-chip="${pid}"]`); if(i){ i.focus(); i.select&&i.select(); } },0); }
+/* チップの検算。⚠️ 入力の途中では出さないこと(全員そろってから・§6-26)。 */
+function chipNote(){
   const d=settleSid;
-  if(!d){
-    el.innerHTML='<div class="hint">卓を選ぶと入力できます</div>';
-    return;
-  }
-  const meta=peekChips(d);
-  const c=meta.counts;
+  if(!d) return '';
+  const c=peekChips(d).counts;
   const pids=dayParticipants(d);
-  if(!pids.length){
-    el.innerHTML='<div class="hint">参加者が未確定です</div>';
-    return;
-  }
-  // 入力するのは「所持枚数」。原点(20枚)との差が増減になる。
-  let html=pids.map(pid=>{
-      const has=c[pid]!==undefined;
-      const delta=has ? c[pid]-CHIP_ORIGIN : 0;
-      const minus=chipSigns[pid]===-1;
-      return `<div class="listrow"><span>${esc(pname(pid))}</span>
-        <span class="meta">${has?`<span class="${cls(delta)}">${fmt(delta)}枚 (${yen(delta*meta.price)})</span>`:''}
-        <button type="button" class="btn small signbtn ${minus?'on':''}" style="margin-left:8px;"
-          aria-label="${esc(pname(pid))} の符号を切り替え(マイナスの枚数を入力)" aria-pressed="${minus}"
-          onclick="toggleChipSign('${d}',${pid})">${minus?'−':'±'}</button>
-        <input type="number" step="1" inputmode="numeric" placeholder="${CHIP_ORIGIN}" style="width:76px; text-align:right; margin-left:6px;"
-          aria-label="${esc(pname(pid))} の所持枚数"
-          value="${c[pid]??''}" onchange="setDayChip('${d}',${pid},this.value)"></span></div>`;
-    }).join('');
-  /* チップはやり取りなので、全員の増減を足すと 0 になるはず。
-     ⚠️ 入力の途中は当然 0 になりません。**全員が入力し終わってから**だけ知らせること
-        (以前、1人目を入れた時点から赤い警告が出続けて邪魔になった)。 */
   const entered=Object.keys(c).length;
   const diff=Object.values(c).reduce((a,n)=>a+(n-CHIP_ORIGIN),0);
+  if(!pids.length) return '';
   if(entered>=pids.length){
-    html += diff===0
-      ? `<div class="ok">✓ 増減の合計 0枚</div>`
-      : `<div class="warn">増減の合計が ${fmt(diff)}枚 です(0になるはず・入力を確認してください)</div>`;
-  }else if(entered){
-    html += `<div class="hint">あと${pids.length-entered}人</div>`;
+    return diff===0 ? `<div class="ok">✓ チップの増減 合計0枚</div>`
+      : `<div class="warn">チップの増減が ${fmt(diff)}枚 です(0になるはず・入力を確認してください)</div>`;
   }
-  html+=`<div class="hint mt">所持枚数を入力(原点 ${CHIP_ORIGIN}枚 / 単価 ${meta.price}円)</div>`;
-  el.innerHTML=html;
+  /* ⚠️ 入力途中にヒント文を出さないこと(§6-44)。
+     入力欄のプレースホルダ(0)と、全員そろったときの検算で足ります。 */
+  return '';
 }
 /* チップ欄の符号モード {pid: -1}。点数入力の cur.signs と同じ考え方(§6-20)。
    大きく負けて原点を割り込んだとき、モバイルの数字キーパッドにはマイナスキーが無いため
@@ -2477,17 +2499,22 @@ function applyChipSign(pid, v){
 function toggleChipSign(d,pid){
   chipSigns[pid] = chipSigns[pid]===-1 ? 1 : -1;
   const cur=peekChips(d).counts[pid];
-  if(cur!==undefined && cur!==0){
-    chipsOf(d).counts[pid] = Math.abs(cur) * chipSigns[pid];
-    save();
+  if(cur!==undefined){
+    // counts は所持枚数。符号を反転するのは「増減」の側(§6-38)
+    const delta=cur-CHIP_ORIGIN;
+    if(delta!==0){ chipsOf(d).counts[pid] = CHIP_ORIGIN + Math.abs(delta)*chipSigns[pid]; save(); }
   }
   renderTotal();
 }
 function setDayChip(d,pid,v){
+  chipEditPid=null;   // 入力が済んだらリザルト表示へ戻す(§6-37)
   const meta=chipsOf(d);
-  const n=applyChipSign(pid, v);
+  const n=applyChipSign(pid, v);   // n は入力された「増減」
+  /* ⚠️ 入力は増減だが、**保存は所持枚数のまま**(counts + v:2)。
+     保存形式を増減に戻すと、過去データと見分けが付かなくなります(§6-26 の形式印)。
+     ここで原点を足してから入れること。 */
   if(n===null){ delete meta.counts[pid]; }
-  else { meta.counts[pid]=n; }
+  else { meta.counts[pid]=CHIP_ORIGIN + n; }
   if(!Object.keys(meta.counts).length) delete S.chips[d]; // 全部消したら卓ごと削除
   save(); renderTotal();
 }
@@ -2499,7 +2526,7 @@ function setDayChip(d,pid,v){
 function totals(sid){
   const day = sid; // 以降のキーはすべてセッションID
   const map={};
-  S.players.forEach(p=> map[p.id]={name:p.name, n:0, top:0, rankSum:0, pt:0, chips:0, ptMoney:0, chipYen:0, money:0, exp:0, tobi:0});
+  S.players.forEach(p=> map[p.id]={pid:p.id, name:p.name, n:0, top:0, rankSum:0, pt:0, chips:0, ptMoney:0, chipYen:0, money:0, exp:0, tobi:0});
   const games = day ? sessionGames(day) : S.games;
   games.forEach(g=>{
     g.seats.forEach((pid,i)=>{
@@ -2564,6 +2591,63 @@ function setSettleSid(v){
   chipSigns={}; // 別の卓に符号モードを持ち越さない
   renderTotal();
 }
+/* 対局精算カード: 点数 + チップ = 合計(§6-36)。
+   ⚠️ 場代はここに混ぜないこと。別カード(renderExpenses)で完全に分けています。 */
+/* チップのセル。入力前・編集中は[+][入力欄]、入力済みはタップで戻せる結果表示(§6-42)。
+   ⚠️ チップの入力欄をこの表の外に出さないこと。別の場所に置くと、
+      誰の分を入れているのか表と見比べる手間が戻ります。 */
+function chipCell(pid, closed){
+  const d=settleSid;
+  const meta=peekChips(d), c=meta.counts;
+  const has=c[pid]!==undefined;
+  const delta=has ? c[pid]-CHIP_ORIGIN : 0;
+  if(closed){   // 精算確定済みの卓は読み取り専用(§6-42)
+    return has ? `${yen(delta*meta.price)}<span class="sub2">${fmt(delta)}枚</span>` : '-';
+  }
+  if(has && chipEditPid!==pid){
+    return `<button type="button" class="chipcell ${cls(delta)}"
+      aria-label="${esc(pname(pid))} のチップを編集" onclick="editChip(${pid})">
+      ${yen(delta*meta.price)}<span class="sub2">${fmt(delta)}枚</span></button>`;
+  }
+  const minus=chipSigns[pid]===-1;
+  return `<span class="chipedit">
+    <button type="button" class="chipsign ${minus?'on':''}" aria-pressed="${minus}"
+      aria-label="${esc(pname(pid))} の符号を切り替え" onclick="toggleChipSign('${d}',${pid})">${minus?'-':'+'}</button>
+    <input type="text" inputmode="numeric" data-chip="${pid}" placeholder="0"
+      aria-label="${esc(pname(pid))} の増減枚数(原点からの差)"
+      value="${has?delta:''}" onchange="setDayChip('${d}',${pid},this.value)"></span>`;
+}
+function renderSettleTable(ts){
+  const el=document.getElementById('settleTable');
+  if(!el) return;
+  if(!ts.length){ el.innerHTML='<div class="hint">この卓の記録はまだありません</div>'; return; }
+  const sess=sessionById(settleSid);
+  const closed=!!(sess && sess.closedAt);
+  el.innerHTML=`<table class="settletbl"><tr><th scope="col">名前</th><th scope="col">点数</th><th scope="col">チップ</th><th scope="col">合計</th></tr>`+
+    ts.map((t,idx)=>`<tr class="${idx===0?'rank1':''}"><td>${idx===0?CROWN:''}${esc(t.name)}</td>
+      <td class="${cls(t.ptMoney)}">${yen(t.ptMoney)}<span class="sub2">${fmt(t.pt)}pt</span></td>
+      <td class="chipcol">${chipCell(t.pid, closed)}</td>
+      <td class="${cls(t.money)} bigmoney">${yen(t.money)}</td></tr>`).join('')
+    +`</table>`+ chipNote();
+}
+/* 精算の確定(卓を締めてアーカイブ)。
+   ⚠️ 卓を締める導線は**この画面だけ**。対局タブの「集計」は廃止しました(§6-42)。 */
+function renderSettleConfirm(){
+  const el=document.getElementById('settleConfirmBody');
+  if(!el) return;
+  const s=settleSid ? sessionById(settleSid) : null;
+  if(!s){ el.innerHTML='<div class="hint">卓がまだありません</div>'; return; }
+  const n=sessionGames(s.id).length;
+  if(s.closedAt){
+    el.innerHTML = `<div class="ok">✓ ${sessionLabel(s)} は精算済み</div>`
+      + `<div class="hint mt">次の半荘を記録すると、新しい卓として始まります</div>`;
+    return;
+  }
+  /* ⚠️ 確定できるときに説明文を出さないこと(§6-44)。ボタンの文言で足ります。
+     押せないとき(0局)だけ、理由を一行だけ添える。 */
+  el.innerHTML = `<button class="btn main" onclick="closeSession()" ${n?'':'disabled'}>精算を確定する</button>`
+    + (n ? '' : `<div class="hint mt">半荘を1局でも記録すると確定できます</div>`);
+}
 function renderTotal(){
   const opts=settleSidOptions();
   // 初回表示、または選択中の卓が候補から消えた場合(その卓の対局を全部削除したなど)は
@@ -2571,51 +2655,15 @@ function renderTotal(){
   if(settleSid===undefined || (settleSid!==null && !opts.some(s=>s.id===settleSid))){
     settleSid=defaultSettleSid();
   }
-  const sel=document.getElementById('settleDatePicker');
-  if(sel){
-    sel.innerHTML = opts.map(s=>
-      `<option value="${s.id}" ${s.id===settleSid?'selected':''}>${sessionLabel(s)}${s.closedAt?'':'(進行中)'}</option>`
-    ).join('') + `<option value="__all__" ${settleSid===null?'selected':''}>通算(全期間)</option>`;
-  }
-  const scopeEl=document.getElementById('totalScopeLabel');
-  if(scopeEl) scopeEl.textContent = settleSid===null ? '通算(全期間)' : sessionLabel(sessionById(settleSid));
-
-  renderChipSettle();
+  /* ⚠️ 卓の選択UIは廃止した(§6-37)。常に defaultSettleSid()=最新の卓を見せる。
+     過去の卓を振り返りたいときはメンバータブの個人ページを使う。 */
   renderExpenses();
+  renderSettleConfirm();
   const ts=totals(settleSid);
-  const el=document.getElementById('totalTable');
-  if(!ts.length){
-    el.innerHTML = settleSid===null
-      ? '<div class="hint">対局データがありません</div>'
-      : '<div class="hint">この卓の記録はまだありません</div>';
-    renderGrandTotal([]); renderShareCanvas([]); return;
-  }
-  /* ⚠️ この表は「対局の結果」だけ。チップ・場代を混ぜないこと。
-     金額を全部足した表は下の「合計」カード(renderGrandTotal)が担当する(§6-28)。 */
-  el.innerHTML=`<table><tr><th scope="col">名前</th><th scope="col">半荘</th><th scope="col">pt</th><th scope="col">金額</th></tr>`+
-    ts.map((t,idx)=>`<tr class="${idx===0?'rank1':''}"><td>${idx===0?CROWN:''}${esc(t.name)}</td><td>${t.n}</td>
-      <td class="${cls(t.pt)}">${fmt(t.pt)}</td>
-      <td class="${cls(t.ptMoney)} bigmoney" style="font-size:15px;">${yen(t.ptMoney)}</td></tr>`).join('')+`</table>`;
-  renderGrandTotal(ts);
+  renderSettleTable(ts);
   renderShareCanvas(ts);
 }
-/* ---------- 合計(対局 + チップ + 場代ほか) ----------
-   ⚠️ 内訳と合計は**常に全部出す**こと。以前は場代が0のとき列ごと消していたため、
-   「この合計に何が入っているのか」が画面によって変わって分かりにくかった(§6-27)。 */
-function renderGrandTotal(ts){
-  const el=document.getElementById('grandTotal');
-  if(!el) return;
-  if(!ts.length){ el.innerHTML='<div class="hint">まだ集計するものがありません</div>'; return; }
-  el.innerHTML=`<table><tr><th scope="col">名前</th><th scope="col">対局</th><th scope="col">チップ</th><th scope="col">場代ほか</th><th scope="col">合計</th></tr>`+
-    ts.map((t,idx)=>{
-      const total=t.money+t.exp;
-      return `<tr class="${idx===0?'rank1':''}"><td>${idx===0?CROWN:''}${esc(t.name)}</td>
-        <td class="${cls(t.ptMoney)}">${yen(t.ptMoney)}</td>
-        <td class="${cls(t.chipYen)}">${t.chips?yen(t.chipYen):'-'}</td>
-        <td class="${cls(t.exp)}">${t.exp?yen(t.exp):'-'}</td>
-        <td class="${cls(total)} bigmoney" style="font-size:15px;">${yen(total)}</td></tr>`;
-    }).join('')+`</table>`;
-}
+
 /* ---------- 共有用の戦績画像(対局+チップ。場代・飲食は含めない) ---------- */
 function cssVar(name, fallback){
   try{
@@ -2907,41 +2955,63 @@ function runSelfTests(){
       tieB.pts[2]===tie.pts[1] && tieB.pts[1]===tie.pts[2]);
 
     // ±の符号モード: 値を入れる前に押しても効き、あとから入力した数字がマイナスになること
-    const curBak=JSON.stringify(cur);
+    const curBak=JSON.stringify(cur); const acBak=activeCell;
     try{
-      cur = resetCur([1,2,3,4]);
-      toggleScoreSign(0);                       // 空欄のまま ± を押す
-      assert('±: 空欄でも符号モードを反転できる', cur.signs[0]===-1);
-      setScore(0,'50');                          // そのあと 50 を入力 → −5,000点
-      assert('±: 先に押しておくと入力値がマイナスになる', cur.scores[0]===-5000);
-      toggleScoreSign(0);                        // もう一度押すと戻る
-      assert('±: もう一度押すと符号が戻る', cur.signs[0]===1 && cur.scores[0]===5000);
-      setScore(1,'-30');                         // 欄に直接マイナスを入力
-      assert('±: 直接マイナスを打つと符号モードも同期する', cur.signs[1]===-1 && cur.scores[1]===-3000);
-      setScore(1,'');                            // 空にしても符号モードは保持(打ち直し用)
-      assert('±: 空にしても符号モードは残る', cur.signs[1]===-1 && cur.scores[1]===null);
-    } finally { cur = JSON.parse(curBak); }
+      cur = resetCur();
+      toggleCellSign(1);                         // 空欄のまま ± を押す
+      assert('±: 空欄でも符号モードを反転できる', cur.signs[1]===-1);
+      setCell(1,'50');                           // そのあと 50 を入力 → −5,000点
+      assert('±: 先に押しておくと入力値がマイナスになる', cur.vals[1]===-5000);
+      toggleCellSign(1);                         // もう一度押すと戻る
+      assert('±: もう一度押すと符号が戻る', cur.signs[1]===1 && cur.vals[1]===5000);
+      setCell(2,'-30');                          // 欄に直接マイナスを入力
+      assert('±: 直接マイナスを打つと符号モードも同期する', cur.signs[2]===-1 && cur.vals[2]===-3000);
+      setCell(2,'');                             // 空にしても符号モードは保持(打ち直し用)
+      assert('±: 空にしても符号モードは残る', cur.signs[2]===-1 && cur.vals[2]===undefined);
+    } finally { cur = JSON.parse(curBak); activeCell=acBak; }
+
+    /* 自動計算セルの追従(§6-40)。
+       3人入れて4人目が自動で入ったあと、他を直したら4人目も計算し直されること */
+    const aBak=JSON.stringify(cur), apBak=autoPid;
+    try{
+      cur=resetCur(); autoPid=null; activeCell=null;
+      S.players=[{id:1,name:'a1'},{id:2,name:'a2'},{id:3,name:'a3'},{id:4,name:'a4'}];
+      S.sessions=[{id:980,t:Date.now(),closedAt:null,pool:[1,2,3,4]}]; S.games=[];
+      setCell(1,'400'); setCell(2,'350'); setCell(3,'250');
+      focusCell(4);                        // 4人目にフォーカス → 残りが自動で入る
+      assert('自動計算: 4人目に残りが入る', cur.vals[4]===0 && autoPid===4);
+      setCell(1,'380');                    // 1人目を直す
+      assert('自動計算: 他を直すと追従する', cur.vals[4]===2000);
+      assert('自動計算: 合計はいつも100,000点', curScores().reduce((a,b)=>a+b,0)===100000);
+      setCell(2,'300');
+      assert('自動計算: 続けて直しても追従する', cur.vals[4]===7000);
+      setCell(4,'60');                     // 4人目を手で打ち直す
+      assert('自動計算: 本人が打ち直したら追従をやめる', autoPid===null && cur.vals[4]===6000);
+      setCell(1,'400');
+      assert('自動計算: やめた後は書き換えない', cur.vals[4]===6000);
+    } finally { cur=JSON.parse(aBak); autoPid=apBak; }
+
 
     // 場代スコープ回帰テスト: 対局していない登録メンバーに費用が割り振られてはいけない
     S.players=[{id:1,name:'t1'},{id:2,name:'t2'},{id:3,name:'t3'},{id:4,name:'t4'},{id:5,name:'t5(未参加)'}];
     S.sessions=[{id:900, t:Date.now(), closedAt:Date.now()}];
     S.games=[{sid:900, t:Date.now(), seats:[1,2,3,4], scores:[25000,25000,25000,25000], pts:[0,0,0,0], ranks:[0,1,2,3], rate:5, tobi:[]}];
     const d=900;
-    S.chips={}; S.expenses={}; S.expenses[d]={venue:1000, personal:{}, splitAll:false};
+    S.chips={}; S.expenses={}; S.expenses[d]={venue:1000};
     const shares=venueShareMap(d);
     assert('場代: 割り振り合計が入力額と一致', Object.values(shares).reduce((a,b)=>a+b,0)===1000);
     assert('場代: 対局参加者4人だけに割り振られる', Object.keys(shares).length===4);
     assert('場代: 未参加メンバーには割り振られない', !('5' in shares));
 
-    // 完全割り勘モード: 場代+飲食の総額を等分し、各人100円単位・合計は総額ちょうど
-    S.expenses[d]={venue:6100, personal:{1:{food:800,drink:0}, 2:{food:0,drink:300}}, splitAll:true};
+    /* 場代は**完全割り勘のみ**(§6-36)。各人100円単位・合計は総額ちょうど */
+    S.expenses[d]={venue:7200};
     const sp=venueShareMap(d);
     const spVals=Object.values(sp);
     assert('完全割り勘: 合計が総額(7,200円)と一致', spVals.reduce((a,b)=>a+b,0)===7200);
     assert('完全割り勘: 全員の負担が100円単位', spVals.every(v=>v%100===0));
-    assert('完全割り勘: 飲食を二重計上しない', costOf(d,1,sp)===sp[1]);
+    assert('完全割り勘: 負担額は shares をそのまま使う', costOf(d,1,sp)===sp[1]);
     // 割り切れない端数は調整役ひとりだけが安くなる(7,300円 → 1900×3 + 1600)
-    S.expenses[d]={venue:7300, personal:{}, splitAll:true};
+    S.expenses[d]={venue:7300};
     const sp2=venueShareMap(d), v2=Object.values(sp2);
     assert('完全割り勘: 端数は1人だけが安くなる',
       v2.reduce((a,b)=>a+b,0)===7300 && Math.max(...v2)-Math.min(...v2)===SPLIT_UNIT*3);
@@ -2960,8 +3030,20 @@ function runSelfTests(){
 
     // 読み取り専用パスが S.expenses を書き換えないことの回帰テスト
     S.expenses={};
-    venueShareMap(999); personalOf(999,1); costOf(999,1,{});
+    venueShareMap(999); venueTotal(999); costOf(999,1,{});
     assert('expenses: 参照しただけでは空エントリを作らない', Object.keys(S.expenses).length===0);
+
+    /* 飲食・その他 → 場代への移行(§6-36)。⚠️ 金額を落とさないこと */
+    const mg=normalize({settings:{rate:5,uma1:30,uma2:10,chipPrice:500}, players:[], groups:[],
+      games:[], sessions:[], chips:{}, nextId:1,
+      expenses:{'900':{venue:4000, personal:{1:{food:800,drink:200}, 2:{food:0,drink:500}},
+                       others:[{id:1,name:'タクシー',amounts:{1:1200,3:600}}], splitAll:false}}});
+    assert('移行: 飲食とその他を場代に合算する', mg.expenses['900'].venue===4000+1000+500+1800);
+    assert('移行: 旧フィールドを残さない',
+      !('personal' in mg.expenses['900']) && !('others' in mg.expenses['900']) && !('splitAll' in mg.expenses['900']));
+    const mg2=normalize({settings:{rate:5,uma1:30,uma2:10,chipPrice:500}, players:[], groups:[],
+      games:[], sessions:[], chips:{}, nextId:1, expenses:{'901':{venue:0, personal:{}}}});
+    assert('移行: 金額ゼロの卓は捨てる', !('901' in mg2.expenses));
 
     // normalize の補完テスト: rate/uma 欠損のデータで金額が NaN にならないこと
     const oldT=new Date(2020,0,1,20,0).getTime();
@@ -3082,7 +3164,7 @@ function runSelfTests(){
     assert('5人卓: 不参加の局は0点扱い', q('q1').pt===60 && q('q5').pt===60);
     assert('5人卓: 全員の pt 合計は0', t5.reduce((a,x)=>a+x.pt,0)===0);
     // 場代は「その卓で打った人」全員で割る(プールに居るだけの人は対象外・§6-1)
-    S.expenses={950:{venue:5000, personal:{}, splitAll:false}};
+    S.expenses={950:{venue:5000}};
     assert('5人卓: 場代は打った5人で割る', Object.keys(venueShareMap(950)).length===5);
     assert('5人卓: 場代の割り振り合計は入力額と一致',
       Object.values(venueShareMap(950)).reduce((a,b)=>a+b,0)===5000);
@@ -3151,6 +3233,9 @@ function runSelfTests(){
     assert('設定反映: 保持した着順どおりの pt になる', S.games[0].pts[2]>S.games[0].pts[1]);
 
     // チップの符号モード(±)
+    S.players=[{id:1,name:'q1'},{id:2,name:'q2'},{id:3,name:'q3'},{id:4,name:'q4'}];
+    S.sessions=[{id:970,t:Date.now(),closedAt:null}];
+    S.games=[{sid:970,t:Date.now(),seats:[1,2,3,4],scores:[25000,25000,25000,25000],pts:[0,0,0,0],ranks:[0,1,2,3],rate:5,uma1:30,uma2:10,tobi:[]}];
     const csBak=JSON.stringify(chipSigns);
     try{
       chipSigns={};
@@ -3163,6 +3248,25 @@ function runSelfTests(){
       assert('チップ±: 空は null', applyChipSign(1,'')===null);
     } finally { chipSigns=JSON.parse(csBak); }
 
+    /* 入力は「増減」、保存は「所持枚数」(§6-38)。
+       ⚠️ 保存形式を増減に戻さないこと。過去データと見分けが付かなくなります(§6-26)。 */
+    const chBak=JSON.stringify(S.chips);
+    try{
+      S.chips={};
+      setDayChip(970, 1, '5');     // +5枚
+      setDayChip(970, 2, '-3');    // -3枚
+      setDayChip(970, 3, '0');     // 増減なし
+      assert('チップ入力: 増減で入れると所持枚数で保存される',
+        S.chips[970].counts[1]===CHIP_ORIGIN+5 && S.chips[970].counts[2]===CHIP_ORIGIN-3);
+      assert('チップ入力: 0 も記録される(未入力と区別する)', S.chips[970].counts[3]===CHIP_ORIGIN);
+      assert('チップ入力: 形式印(v)が付く', S.chips[970].v===CHIP_FMT);
+      const t=totals(970);
+      assert('チップ入力: 集計に出る増減が入力どおり',
+        (t.find(x=>x.name==='q1')||{chips:null}).chips===5);
+      setDayChip(970, 1, '');      // 空にすると消える
+      assert('チップ入力: 空にすると消える', S.chips[970].counts[1]===undefined);
+    } finally { S.chips=JSON.parse(chBak); }
+
     // 【回帰防止】チップを入力したら、その人の行に枚数が出ること(§6-26)
     //  表示を落としてしまい「入力しても反映されない」ように見えた事故がある
     S.players=[{id:1,name:'q1'},{id:2,name:'q2'},{id:3,name:'q3'},{id:4,name:'q4'}];
@@ -3171,20 +3275,34 @@ function runSelfTests(){
       pts:[0,0,0,0], ranks:[0,1,2,3], rate:5, uma1:30, uma2:10, tobi:[]}];
     S.chips={930:{price:500, counts:{1:25, 2:18}, v:CHIP_FMT}}; S.expenses={}; // 所持枚数
     settleSid=930;
-    renderChipSettle();
-    const chipHtml=document.getElementById('chipSettle').innerHTML;
-    assert('チップ表示: 所持枚数から求めた増減が行に出る',
+    renderSettleTable(totals(930));
+    const chipHtml=document.getElementById('settleTable').innerHTML;
+    assert('チップ表示: 所持枚数から求めた増減が表のセルに出る',
       /\+5枚/.test(chipHtml) && /-2枚/.test(chipHtml));
     // ゼロサムのチェック: 全員そろうまでは警告を出さない
     assert('チップ検算: 入力途中は警告を出さない', !/0になるはず/.test(chipHtml));
     S.chips={930:{price:500, counts:{1:25, 2:18, 3:20, 4:20}, v:CHIP_FMT}}; // 増減合計 +3枚
-    renderChipSettle();
-    const badHtml=document.getElementById('chipSettle').innerHTML;
+    renderSettleTable(totals(930));
+    const badHtml=document.getElementById('settleTable').innerHTML;
     assert('チップ検算: 全員そろって合計が0でなければ警告', /0になるはず/.test(badHtml) && /\+3枚/.test(badHtml));
     S.chips={930:{price:500, counts:{1:25, 2:18, 3:20, 4:17}, v:CHIP_FMT}}; // 増減合計 0
-    renderChipSettle();
+    renderSettleTable(totals(930));
     assert('チップ検算: 合計0なら OK 表示',
-      /増減の合計 0枚/.test(document.getElementById('chipSettle').innerHTML));
+      /増減 合計0枚/.test(document.getElementById('settleTable').innerHTML));
+    /* 精算を確定した卓は、チップのセルが入力欄にならないこと(§6-42) */
+    S.sessions=[{id:930,t:Date.now(),closedAt:Date.now()}];
+    renderSettleTable(totals(930));
+    assert('精算確定後: チップは読み取り専用',
+      !/data-chip=/.test(document.getElementById('settleTable').innerHTML));
+    /* 未入力の人のセルは入力欄になる。
+       ⚠️ 全員入力済みのときは「結果表示(タップで編集)」なので data-chip は出ない。
+          ここを全員入力済みで試すと誤って落ちます。 */
+    S.sessions=[{id:930,t:Date.now(),closedAt:null}];
+    S.chips={930:{counts:{1:25}, v:CHIP_FMT}};
+    renderSettleTable(totals(930));
+    const openHtml=document.getElementById('settleTable').innerHTML;
+    assert('未入力の人は入力欄になる', /data-chip=/.test(openHtml));
+    assert('入力済みの人は結果表示(タップで編集)', /class="chipcell/.test(openHtml));
     S.chips={};
 
     // 半荘を編集したとき、当時のウマで再計算されること(現在の設定で上書きされない)
@@ -3267,24 +3385,24 @@ window.delGroup = delGroup;
 window.tgGp = tgGp;
 window.showGroupProfile = showGroupProfile;
 window.hideGroupProfile = hideGroupProfile;
-window.setSeat = setSeat;
 window.selectGroup = selectGroup;
 window.openPoolPicker = openPoolPicker;
 window.setKiriage = setKiriage;
-window.setScore = setScore;
-window.finalizeScore = finalizeScore;
-window.toggleScoreSign = toggleScoreSign;
+window.toggleCellSign = toggleCellSign;
+window.setCell = setCell;
+window.finalizeCell = finalizeCell;
+window.focusCell = focusCell;
 window.saveGame = saveGame;
 window.editGame = editGame;
 window.cancelEditGame = cancelEditGame;
 window.delGame = delGame;
-window.clearExpenses = clearExpenses;
 window.setVenue = setVenue;
-window.setPersonal = setPersonal;
+window.commitVenue = commitVenue;
 window.setDayChip = setDayChip;
 window.toggleChipSign = toggleChipSign;
-window.setSettleSid = setSettleSid;
-window.setSplitAll = setSplitAll;
+window.editChip = editChip;
+window.closeSession = closeSession;
+window.delEditingGame = delEditingGame;
 window.closeSession = closeSession;
 window.reopenSession = reopenSession;
 window.shareResult = shareResult;
